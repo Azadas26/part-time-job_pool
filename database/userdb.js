@@ -9,10 +9,11 @@ module.exports=
     {
         return new promise(async(resolve,reject)=>
         {
-            info.password =await bcrypt.hash(info.password,10)
-            db.get().collection(consts.userbase).insertOne(info).then((data)=>
+          
+            db.get().collection(consts.usertemp).insertOne(info).then((data)=>
             {
-                resolve(data)
+                //console.log(data);
+                resolve(data.ops[0]._id)
             })
         })
     },
@@ -25,6 +26,16 @@ module.exports=
                 resolve(email);
             })
         })
+    },
+    Check_Whether_The_AaDhar_is_EXIST_or_not : (info)=>
+    {
+            return new promise((resolve,reject)=>
+            {
+                db.get().collection(consts.userbase).findOne({aadhar:info.aadhar}).then((aadhar)=>
+                {
+                    resolve(aadhar)
+                })
+            })
     },
     Do_login : (info)=>
     {
