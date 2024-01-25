@@ -9,8 +9,7 @@ var fileupload = require('express-fileupload');
 var session = require('express-session')
 
 var UserRouter = require('./routes/user');
-var ShopRouter = require('./routes/admin');
-var HirerRouter = require('./routes/admin');
+var HirerRouter = require('./routes/hiree');
 var AdminRouter = require('./routes/admin');
 var WorkerRouter = require('./routes/workers');
 
@@ -31,7 +30,7 @@ app.use(fileupload())
 
 app.use('/', UserRouter);
 app.use('/admin', AdminRouter);
-app.use('/Shop', ShopRouter);
+
 app.use('/Hiree', HirerRouter);
 app.use('/worker', WorkerRouter);
 

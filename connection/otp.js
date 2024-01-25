@@ -4,11 +4,12 @@ var promise = require("promise");
 module.exports = {
   Generate_Otp: (ph) => {
     return new promise(async (resolve, reject) => {
-      const accountSid = "AC86bf867d4974f0444cb887bebebdebda";
+      console.log(ph);
+      const accountSid = "ACa1d81e63091611cf838cdcb3e2585521";
 
-      const authToken = "c2ce3ab9d7e37a79ce9bb37f810f9299";
+      const authToken = "ed98fe243992d1400a56253f2fdadd34";
 
-      const twilioPhoneNumber = "+16187534866";
+      const twilioPhoneNumber = "+12409492550";
 
       function generateOTP() {
         const digits = "0123456789";
@@ -39,7 +40,7 @@ thankyou and grateday..`,
       // Usage example
       const phoneNumber = "+91" + ph; // Replace with the recipient's phone number
       const otp = generateOTP();
-      resolve(otp)
+      resolve(otp);
 
       await sendOTPSMS(phoneNumber, otp);
     });

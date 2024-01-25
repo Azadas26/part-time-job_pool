@@ -10,7 +10,8 @@ module.exports=
         return new promise(async(resolve,reject)=>
         {
           
-            db.get().collection(consts.usertemp).insertOne(info).then((data)=>
+            info.password =await bcrypt.hash(info.password,10);
+            db.get().collection(consts.userbase).insertOne(info).then((data)=>
             {
                 //console.log(data);
                 resolve(data.ops[0]._id)

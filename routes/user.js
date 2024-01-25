@@ -59,7 +59,8 @@ router.post("/signup", (req, res) => {
           else
           {
             usebase.Do_signup(req.body).then(async(id) => {
-              res.redirect("/otp");
+              res.redirect("/login");
+              //console.log(req.body.ph);
               verifyotp.ph = req.body.ph;
               var image = req.files.image
               if(image)
@@ -127,6 +128,7 @@ router.get("/otp",async(req,res)=>
   }
   else
   {
+    console.log(verifyotp);
      otp.Generate_Otp(verifyotp.ph).then((otp)=>
      {
          verifyotp.otp = otp;

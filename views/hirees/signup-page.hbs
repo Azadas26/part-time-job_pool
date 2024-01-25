@@ -1,0 +1,163 @@
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<div id="signup" class="container-fluid">
+    <div class="row ">
+        <div class="col-md-12 p-5" style="box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+            <form action="/Hiree/signup" method="post" enctype="multipart/form-data" id="usersignupform">
+                <h1 class="text-center" style="font-weight: 800; color: rgb(38, 38, 37);"><b>Create Your Account</b>
+                </h1>
+                <div class="form-group">
+                    <p style="color: red;">
+                        {{#if emailexist}}
+                            {{emailexist}}
+                        {{/if}}
+                    </p>
+                     <p style="color: red;">
+                        {{#if aadharexist}}
+                            {{ aadharexist}}
+                        {{/if}}
+                    </p>
+                    
+                    <label for="exampleInputEmail1"><b>Enter Name</b></label>
+                    <input name="name" type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="Name">
+
+                </div>
+                <div class="form-group">
+                    <label class="" for="exampleInputEmail1"><b>Email address</b></label>
+                    <input name="email" type="email" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="Email">
+
+                </div>
+                <div class="form-group" >
+                    <label for="exampleInputEmail1"><b>Enter Phone Number</b></label>
+                    <input name="ph" type="number" class="form-control" id="ph"
+                        aria-describedby="emailHelp" placeholder="+91 XXXXXX0490" onchange="otpss()">
+                    
+                </div>
+                <div class="form-group" style="display: flex;
+            justify-content: space-between;">
+                    <label for="exampleInputEmail1"><b>Enter your Aadhar Number  & Image</b></label>
+                    <input name="aadhar" type="number" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="XXX XXX XXX XXX" style="width: 50%;">
+                        <input name="image" type="file" class="form-control ml-1" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="XXX XXX XXX XXX" style="width: 35%;">
+
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1"><b>Enter Address With Picode</b></label>
+                    <input name="address" type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="ABCD house,pathiyoorkala,keerikad P.O 6005XX"
+                        style="height: 100px;">
+                        
+
+                </div>
+                <div class="form-group" style="display: flex;
+            justify-content: space-between;">
+                    <label class="" for="exampleInputPassword1"><b>Choose Your District & Location</b></label>
+                    <select id="district" name="district" style="width: 100%; height: 35px; border: 0; height: 60px;">
+                        <option value="alappuzha">Alappuzha</option>
+                        <option value="ernakulam">Ernakulam</option>
+                        <option value="idukki">Idukki</option>
+                        <option value="kannur">Kannur</option>
+                        <option value="kasaragod">Kasaragod</option>
+                        <option value="kollam">Kollam</option>
+                        <option value="kottayam">Kottayam</option>
+                        <option value="kozhikode">Kozhikode</option>
+                        <option value="malappuram">Malappuram</option>
+                        <option value="palakkad">Palakkad</option>
+                        <option value="pathanamthitta">Pathanamthitta</option>
+                        <option value="thiruvananthapuram">Thiruvananthapuram</option>
+                        <option value="thrissur">Thrissur</option>
+                        <option value="wayanad">Wayanad</option>
+                    </select>
+                     <button type="button" name="location" class="form-control ml-2" id="location"
+                        aria-describedby="emailHelp" style="width: 35%;" onclick="getUserLocation()">Location</button>
+                         <input name="late" type="text" style="display: none;" id="late">
+                         <input name="long" type="text" style="display: none;" id="long">
+                </div>
+                <div class="form-group">
+                    <label class="" for="exampleInputPassword1"><b>Password</b></label>
+                    <input name="password" type="password" class="form-control" id="exampleInputPassword1"
+                        placeholder="Password">
+                </div>
+                <div class="form-group" style="text-align: right;">
+                    <p href="/login" style="cursor: pointer;" class="text-dark" onclick="login()"><b>Alredy Have An Account ?</b></p>
+                </div>
+                <button type="submit" style="width: 100%; border-radius: 12px;" class="btn btn-dark">Submit</button>
+            </form>
+            {{!-- ############################################################################################### --}}
+             <form action="/Hiree/login" method="post" enctype="multipart/form-data" style="display: none;" id="login">
+                <h1 class="text-center" style="font-weight: 800; color: rgb(38, 38, 37);"><b>Switch To Your Account</b>
+                </h1>
+                 <p style="color: red;">
+                    {{#if errorlogin}}
+                        {{errorlogin}}
+                    {{/if}}
+                 </p>
+                <div class="form-group">
+                    <label class="" for="exampleInputEmail1">Email address</label>
+                    <input name="email" type="email" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="Email">
+
+                </div>
+                <div class="form-group">
+                    <label class="" for="exampleInputPassword1">Password</label>
+                    <input name="password" type="password" class="form-control" id="exampleInputPassword1"
+                        placeholder="Password">
+                </div>
+                <div class="form-group" style="text-align: right;">
+                    <p href="/signup" class="text-dark" onclick="signup()" style="cursor: pointer;"><b>Create Your Account...</b></p>
+                </div>
+                <button type="submit" style="width: 100%; border-radius: 12px;" class="btn btn-dark">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function login()
+    {
+         document.getElementById('usersignupform').style.display = "none"
+         $("#login").slideDown("slow");
+    }
+    function signup()
+    {   
+       document.getElementById('login').style.display = "none"
+         $("#usersignupform").slideDown("slow");
+    }
+    function getUserLocation() {
+        
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            console.log("Called")
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            document.getElementById("late").value = ""+latitude
+            document.getElementById("long").value = ""+longitude
+            
+            // You can use the obtained coordinates to open a map or perform navigation
+            // For example, opening Google Maps
+           // window.open(`https://www.google.com/maps?q=${latitude},${longitude}`, "_blank");
+        }
+        
+</script>
+
+<style>
+    #signup {
+        background-image: url(/images/pexels-aleksandar-pasaric-1437493.jpg);
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
