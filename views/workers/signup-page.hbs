@@ -1,9 +1,9 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <div id="signup" class="container-fluid">
     <div class="row ">
-        <div class="col-md-12 p-5" style="box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
-            <form action="/worker/signup" method="post" enctype="multipart/form-data" id="usersignupform">
-                <h1 class="text-center" style="font-weight: 800; color: rgb(38, 38, 37);"><b>Create Your Account</b>
+        <div class="col-md-12 p-5 m-5" id="usersignupformdiv"  style="box-shadow:#C993e8 0px 54px 55px, #C993e8 0px -12px 30px, #C993e8 0px 4px 6px, #C993e8 0px 12px 13px, #C993e8 0px -3px 5px;">
+            <form action="/worker/signup" method="post" enctype="multipart/form-data" id="usersignupform" style="color: #C993e8;">
+                <h1 class="text-center" style="font-weight: 800;"><b>Create Your Account</b>
                 </h1>
                 <div class="form-group">
                     <p style="color: red;">
@@ -80,14 +80,33 @@
                     <input name="password" type="password" class="form-control" id="exampleInputPassword1"
                         placeholder="Password">
                 </div>
-                <div class="form-group" style="text-align: right;">
-                    <p href="/login" style="cursor: pointer;" class="text-dark" onclick="login()"><b>Alredy Have An Account ?</b></p>
+                   <div style="display: inline-flex; width: 48%;">
+        <div style="width: 100%;">
+            <label for="exampleInputPassword1"><b>Job Type</b></label>
+            <select name="isskilled" id="isskilled" onchange="job()">
+                <option value="no">Non-skilled</option>
+                <option value="yes">Skilled</option>                   
+            </select>
+        </div>
+    </div>
+        <div class="p-5" style="width: 100%;display: none;" id="jobs"> <br>
+            <label for="exampleInputPassword1"><b>Enter Your Job Name</b></label>
+            <input name="jobname" type="text" class="form-control" id="exampleInputPassword1" placeholder="Doctor"> <br>
+            <label for="exampleInputPassword1"><b>Experienced Prooff</b></label>
+            <input name="proof" type="file" class="form-control" id="exampleInputPassword1">
+            <small>If You Are does not upload proof your rank become low</small>
+        </div>
+    
+                <div class="form-group m-4" style="text-align: right;">
+                    <p href="/login" style="cursor: pointer;color: #e3d0ee;"  onclick="login()"><b>Alredy Have An Account ?</b></p>
                 </div>
-                <button type="submit" style="width: 100%; border-radius: 12px;" class="btn btn-dark">Submit</button>
+                <button type="submit" style="width: 100%; border-radius: 12px;" class="btn btn-dark"><b>Submit</b></button>
             </form>
+             </div>
             {{!-- ############################################################################################### --}}
-             <form action="/worker/login" method="post" enctype="multipart/form-data" style="display: none;" id="login">
-                <h1 class="text-center" style="font-weight: 800; color: rgb(38, 38, 37);"><b>Switch To Your Account</b>
+            <div class="col-md-12 p-5" id="logindiv" style="display: none;box-shadow: #C993e8 0px 54px 55px, #C993e8 0px -12px 30px, #C993e8 0px 4px 6px, #C993e8 0px 12px 13px, #C993e8 0px -3px 5px;">
+             <form action="/worker/login" method="post" enctype="multipart/form-data" id="login" style="color: #C993e8;">
+                <h1 class="text-center" style="font-weight: 800; "><b>Switch To Your Account</b>
                 </h1>
                  <p style="color: red;">
                     {{#if errorlogin}}
@@ -106,24 +125,25 @@
                         placeholder="Password">
                 </div>
                 <div class="form-group" style="text-align: right;">
-                    <p href="/signup" class="text-dark" onclick="signup()" style="cursor: pointer;"><b>Create Your Account...</b></p>
+                    <p href="/signup"  onclick="signup()" style="cursor: pointer;color: #e3d0ee;"><b>Create Your Account...</b></p>
                 </div>
-                <button type="submit" style="width: 100%; border-radius: 12px;" class="btn btn-dark">Submit</button>
+                <button type="submit" style="width: 100%; border-radius: 12px;" class="btn btn-dark"><b>Submit</b></button>
             </form>
-        </div>
+       </div>
     </div>
 </div>
 
 <script>
     function login()
     {
-         document.getElementById('usersignupform').style.display = "none"
-         $("#login").slideDown("slow");
+          document.getElementById('usersignupformdiv').style.display = "none"
+         $("#logindiv").slideDown("slow");
     }
     function signup()
     {   
-       document.getElementById('login').style.display = "none"
-         $("#usersignupform").slideDown("slow");
+    
+        document.getElementById('logindiv').style.display = "none"
+         $("#usersignupformdiv").slideDown("slow");
     }
     function getUserLocation() {
         
@@ -133,7 +153,6 @@
                 alert("Geolocation is not supported by this browser.");
             }
         }
-
         function showPosition(position) {
             console.log("Called")
             const latitude = position.coords.latitude;
@@ -145,7 +164,18 @@
             // For example, opening Google Maps
            // window.open(`https://www.google.com/maps?q=${latitude},${longitude}`, "_blank");
         }
-        
+        function job()
+        {
+             var selectedValue = document.getElementById("isskilled").value;
+             if(selectedValue == "yes")
+             {
+                    document.getElementById("jobs").style.display = ""
+             }
+             else
+             {
+                 document.getElementById("jobs").style.display = "none"
+             }
+        }
 </script>
 
 <style>
@@ -155,7 +185,7 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        height: 100vh;
+        height: 120vh;
         display: flex;
         align-items: center;
         justify-content: center;

@@ -47,7 +47,7 @@ router.post("/signup", (req, res) => {
     .then((email) => {
       if (email) {
         req.session.wkemailexist = true;
-        res.redirect("/worker//signup");
+        res.redirect("/worker/signup");
       } else {
        wrkbase.Check_Whether_The_AaDhar_is_EXIST_or_not(req.body).then((aadhar)=>
        {
@@ -62,6 +62,7 @@ router.post("/signup", (req, res) => {
               res.redirect("/worker/login");
               wkverifyotp.ph = req.body.ph;
               var image = req.files.image
+              req.body.proof = false
               if(image)
               {
                 await image.mv("public/wkaadhar/" + id + ".jpg", (err, data) => {
@@ -69,6 +70,16 @@ router.post("/signup", (req, res) => {
                       console.log(err);
                   }
               })
+              }
+              var proof = req.files.proof
+              if(proof)
+              {
+                req.body.proof = true
+                await image.mv("public/workers-proof/" + id + ".jpg", (err, data) => {
+                  if (err) {
+                      console.log(err);
+                  }
+                })
               }
             });
           }

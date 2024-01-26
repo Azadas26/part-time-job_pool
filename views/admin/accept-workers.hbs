@@ -10,6 +10,8 @@
       <th scope="col">Phone Number</th>
       <th scope="col">Aadhar Number</th>
        <th scope="col">Aadhar Image</th>
+       <th scope="col">skilled/non-skilled</th>
+       <th scope="col">job type</th>
       <th scope="col">Address</th>
       <th scope="col">District</th>
       <th scope="col">Location</th>
@@ -19,13 +21,15 @@
   <tbody>
     {{#if users}}
      {{#each users}}
-     <tr>
+     <tr>          
        <td>{{@index}}</td>
        <td>{{this.name}}</td>
         <td>{{this.email}}</td>
         <td>{{this.ph}}</td>
         <td>{{this.aadhar}}</td>
         <td><img src="/wkaadhar/{{this._id}}.jpg" style="width: 200px; height: 200px;" alt="Aadhar"></td>
+        <td>{{this.isskilled}}</td>
+        <td>{{#if this.jobname}} {{this.jobname}} {{else}} --- {{/if}}</td>
         <td>{{this.address}}</td>
         <td>{{this.district}}</td>
          
@@ -82,6 +86,8 @@
                     <label class="" for="exampleInputPassword1"><b>Password</b></label>
                     <input name="password" type="password" class="form-control" id="exampleInputPassword1"
                         placeholder="Password" value="{{this.password}}">
+                         <input name="jobname" type="text" class="form-control" id="exampleInputPassword1" value="{{this.jobname}}">
+                          <input name="isskilled" type="text" class="form-control" id="exampleInputPassword1" value="{{this.isskilled}}">
                 </div>
                 <button type="submit"  class="btn btn-outline-success">accept</button>
             </form>
