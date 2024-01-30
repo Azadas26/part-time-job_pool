@@ -1,0 +1,105 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Number</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone Number</th>
+      <th scope="col">Aadhar Number</th>
+       <th scope="col">Aadhar Image</th>
+       <th scope="col">skilled/non-skilled</th>
+       <th scope="col">job type</th>
+      <th scope="col">Address</th>
+      <th scope="col">District</th>
+      <th scope="col">Location</th>
+      <th scope="col">Accept / reject</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#if users}}
+     {{#each users}}
+     <tr>          
+       <td>{{@index}}</td>
+       <td>{{this.name}}</td>
+        <td>{{this.email}}</td>
+        <td>{{this.ph}}</td>
+        <td>{{this.aadhar}}</td>
+        <td><img src="/wkaadhar/{{this._id}}.jpg" style="width: 200px; height: 200px;" alt="Aadhar"></td>
+        <td>{{this.isskilled}}</td>
+        <td>{{#if this.jobname}} {{this.jobname}} {{else}} --- {{/if}}</td>
+        <td>{{this.address}}</td>
+        <td>{{this.district}}</td>
+         
+         <td><a href="https://www.google.com/maps?q={{this.late}},{{this.long}}" class="btn btn-success">Location</a></td>
+          <td>
+             <form action="/subadmin/acceptworkers?id={{this._id}}" method="post" enctype="multipart/form-data" id="usersignupform">
+               
+                <div class="form-group" style="display: none;">
+                     
+                <label for="exampleInputEmail1"><b>Enter Name</b></label>
+                    <input name="name" type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="Name" value="{{this.name}}">
+
+                </div>
+                <div class="form-group" style="display: none;">
+                    <label class="" for="exampleInputEmail1"><b>Email address</b></label>
+                    <input name="email" type="email" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="Email" value="{{this.email}}">
+
+                </div>
+                <div class="form-group" style="display: none;">
+                    <label for="exampleInputEmail1"><b>Enter Phone Number</b></label>
+                    <input name="ph" type="number" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="+91 XXXXXX0490"value="{{this.ph}}">
+
+                </div>
+                <div class="form-group" style="display: flex;
+            justify-content: space-between;display: none;">
+                    <label for="exampleInputEmail1"><b>Enter your Aadhar Number  & Image</b></label>
+                    <input name="aadhar" type="number" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="XXX XXX XXX XXX" style="width: 50%;" value="{{this.aadhar}}">
+                        
+
+                </div>
+                <div class="form-group" style="display: none;">
+                    <label for="exampleInputEmail1"><b>Enter Address With Picode</b></label>
+                    <input name="address" type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="ABCD house,pathiyoorkala,keerikad P.O 6005XX"
+                        style="height: 100px;" value="{{this.address}}">
+                        
+
+                </div>
+                <div class="form-group" style="display: flex;
+            justify-content: space-between; display: none;">
+                    <label class="" for="exampleInputPassword1"><b>Choose Your District & Location</b></label>
+                       <input name="district" type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="ABCD house,pathiyoorkala,keerikad P.O 6005XX"
+                        style="height: 100px;" value="{{this.district}}">
+                   
+                         <input name="late" type="text" style="display: none;" id="late" value="{{this.late}}">
+                         <input name="long" type="text" style="display: none;" id="long" value="{{this.long}}">
+                </div>
+                <div class="form-group" style="display: none;">
+                    <label class="" for="exampleInputPassword1"><b>Password</b></label>
+                    <input name="password" type="password" class="form-control" id="exampleInputPassword1"
+                        placeholder="Password" value="{{this.password}}">
+                         <input name="jobname" type="text" class="form-control" id="exampleInputPassword1" value="{{this.jobname}}">
+                          <input name="isskilled" type="text" class="form-control" id="exampleInputPassword1" value="{{this.isskilled}}">
+                </div>
+                <button type="submit"  class="btn btn-outline-success">accept</button>
+            </form>
+            <a href="/subadmin/removeacceptwk?id={{this._id}}" class="btn btn-outline-danger mt-3">Remove</a>
+          </td>
+     </tr>
+     {{/each}}
+    {{else}}
+        <h1>Nothing Found</h1>
+    {{/if}}
+  </tbody>
+</table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <div class="row p-5">
+      {{#each jobs}}
+    {{#if this.ctaccept}}
+        <div class="col-md-12 m-auto p-5">
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="..." alt="Card image cap" />
+            <div class="card-body">
+              <h5 class="card-title">Shop Name : {{this.sname}}</h5>
+                <h5 class="card-title">Licence Number : {{this.lno}}</h5>
+                 <h5 class="card-title">Salary (one day) : {{this.salary}}</h5>
+                 <h5 class="card-title">Work Starting Time {{this.stime}} To {{this.entim}}</h5>
+                  <h5 class="card-title">Work Starting Date {{this.sdate}} To {{this.edate}}</h5>
+              <p class="card-text">{{this.address}}</p>
+               <td><a href="https://www.google.com/maps?q={{this.late}},{{this.long}}" class="btn btn-success">Location</a></td>
+             <form action="/worker/applayjob?wkid={{this._id}}&userid={{this.userid}}" method="post" class="m-3">
+                    <input class="btn-outline-warning" type="submit" value="Ready to join">
+             </form>
+            </div>
+          </div>
+        </div>
+    {{/if}}
+      {{/each}}
+               {{#if succ}}
+                    <p>{{succ}}</p>
+               {{/if}}
+               {{#if already}}
+                    {{already}}
+               {{/if}}
+  </div>
+</div>

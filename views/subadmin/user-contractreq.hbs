@@ -1,0 +1,52 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <table class="table text-light">
+  <thead>
+    <tr>
+      <th scope="col">Number</th>
+      <th scope="col">Shop Name</th>
+      <th scope="col">Licence Number</th>
+      <th scope="col">Shop Address</th>
+      <th scope="col">Shop District</th>
+       <th scope="col">Location</th>
+       <th scope="col">Employee Wanted</th>
+       <th scope="col">Salary per Head</th>
+      <th scope="col">Starting To Ending (Time)</th>
+      <th scope="col">Starting To Ending (Date)</th>
+      <th scope="col">WorkType</th>
+      <th scope="col">User Name</th>
+      <th scope="col">User Email</th>
+      <th scope="col">User Phone Number</th>
+       <th scope="col">Job Add</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#if ctr}}
+     {{#each ctr}}
+     <tr>          
+       <td>{{@index}}</td>
+       <td>{{this.sname}}</td>
+        <td>{{this.lno}}</td>
+        <td>{{this.address}}</td>
+        <td>{{this.district}}</td>
+        <td><a href="https://www.google.com/maps?q={{this.late}},{{this.long}}" class="btn btn-success">Location</a></td>
+        <td>{{this.empno}}</td>
+        <td>{{this.salary}}</td>
+        <td>{{this.stime}} To {{this.entim}}</td>
+        <td>{{this.sdate}} To {{this.edate}}</td>
+         <td>{{this.wktype}}</td>
+         <td>{{this.user.name}}</td>
+         <td>{{this.user.email}}</td>
+         <td>{{this.user.ph}}</td>
+         <td><a href="/subadmin/recruitment?jobid={{this._id}}&userid={{this.userid}}" class="btn btn-outline-success">Proceed</a></td>
+     </tr>
+     {{/each}}
+    {{else}}
+        <h1>Nothing Found</h1>
+    {{/if}}
+  </tbody>
+</table>
+        </div>
+    </div>
+</div>

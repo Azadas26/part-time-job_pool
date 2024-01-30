@@ -3,7 +3,20 @@ var router = express.Router();
 var usebase = require("../database/userdb");
 const twilio = require("twilio");
 var otp = require('../connection/otp')
+var objectId = require('mongodb').ObjectId
 
+
+var verfyuserlogin = (req,res,next)=>
+{
+    if(req.session.user)
+    {
+      next()
+    }
+    else
+    {
+      res.redirect('/login')
+    }
+} 
 /* GET home page. */
 var verifyotp =
 {
@@ -148,5 +161,32 @@ router.post("/otp",(req,res)=>
       req.session.otp = true;
       res.redirect("/otp");
     }
+})
+router.get("/reqcontract",verfyuserlogin,(req,res)=>
+{
+  console.log(req.session.user._id,req.query.wktype);
+    usebase.Check_Whethet_the_Contract_already_commited_or_Not(req.session.user._id,req.query.wktype).then((reqexist)=>
+    {
+        if(reqexist)
+        {
+          res.render('./users/contract-page',{userhd:true,user:req.session.user,reqexist})
+        }
+        else
+        {
+          res.render('./users/contract-page',{userhd:true,user:req.session.user})  
+        }
+    })
+})
+router.post("/reqcontract",verfyuserlogin,(req,res)=>
+{
+   //console.log(req.session);
+   req.body.userid = objectId(req.session.user._id);
+   req.body.wktype = req.query.wktype;
+   req.body.ctaccept = false
+   usebase.User_Contract_info_FOR_acceptecnce(req.body).then((info)=>
+   {
+        res.redirect('/reqcontract')
+   })
+
 })
 module.exports = router;

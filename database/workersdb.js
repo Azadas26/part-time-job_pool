@@ -2,6 +2,7 @@ var promise = require('promise')
 var db = require('../connection/connect')
 var consts = require('../connection/consts') 
 var bcrypt = require('bcryptjs')
+var objectId = require('mongodb').ObjectId
 
 module.exports=
 {
@@ -71,6 +72,65 @@ module.exports=
                     resolve({state:false})
                     console.log("Login Faild");
                }
+            })
+        })
+    },
+    View_available_Jobs : ()=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            var jobs = db.get().collection(consts.userContractdb).find().toArray()
+            resolve(jobs)
+        })
+        
+    },
+    Assign_Worker_to_Their_Redy_To_join : (wkid,userid,workerid)=>
+    {
+        return new promise((resolve,reject)=>
+        {   
+            db.get().collection(consts.assignjob).findOne({wkid:objectId(wkid),userid:objectId(userid)}).then(async(res)=>
+            {
+                var wrk =
+                {
+                    workerid : objectId(workerid)
+                }
+                if(res)
+                {
+                    var st = res.workers.findIndex(wks => wks.workerid == workerid)
+                    
+                    console.log(st);
+                    if(st === -1)
+                    {
+                        
+                        await db.get().collection(consts.assignjob).updateOne({ userid: objectId(userid),wkid:objectId(wkid) },
+                        {
+                            $push:
+                            {
+                               workers:wrk
+                            }
+                        }).then((data) => {
+                            resolve(false)
+                        })
+                    }
+                    else
+                    {
+                        resolve(true)
+                    }
+
+                }
+                else
+                {
+                   var wk =
+                   {
+                     wkid:objectId(wkid),
+                     userid:objectId(userid),
+                     workers:[wrk]
+                   }
+                    db.get().collection(consts.assignjob).insertOne(wk).then((resc)=>
+                    {
+                        resolve(false)
+                    })
+                }
             })
         })
     }

@@ -11,6 +11,18 @@ var wkverifyotp =
   otp:null
 }
 
+var verifyworker = (req,res,next)=>
+{
+    if( req.session.wrker)
+    {
+        next()
+    }
+    else
+    {
+        res.redirect("/worker/login")
+    }
+}
+
 router.get("/", function (req, res, next) {
   if( req.session.wrker)
   {
@@ -158,4 +170,33 @@ router.post("/otp",(req,res)=>
       res.redirect("/worker/otp");
     }
 })
+router.get("/applayjob",verifyworker,(req,res)=>
+{
+   wrkbase.View_available_Jobs().then((jobs)=>
+   {
+      // console.log(jobs);
+      res.render('./workers/jobs-page',{wk: true,user:req.session.wrker,jobs})
+   })
+})
+router.post("/applayjob",verifyworker,(req,res)=>
+{
+    console.log(req.query.wkid,req.query.userid,req.session.wrker._id);
+    wrkbase. Assign_Worker_to_Their_Redy_To_join(req.query.wkid,req.query.userid,req.session.wrker._id).then((resc)=>
+    {
+      wrkbase.View_available_Jobs().then((jobs)=>
+      {
+         // console.log(jobs);
+        
+         if(resc)
+         {
+          res.render('./workers/jobs-page',{wk: true,user:req.session.wrker,jobs,already:"Your Already In"})
+         }
+         else
+         {
+          res.render('./workers/jobs-page',{wk: true,user:req.session.wrker,jobs,succ:"Requested Successfully Commited"})
+         }
+      })
+    })
+})
+
 module.exports = router;

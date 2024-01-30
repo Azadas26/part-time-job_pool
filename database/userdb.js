@@ -2,6 +2,7 @@ var promise = require('promise')
 var db = require('../connection/connect')
 var consts = require('../connection/consts') 
 var bcrypt = require('bcryptjs')
+var objecTId = require('mongodb').ObjectId
 
 module.exports=
 {
@@ -72,6 +73,26 @@ module.exports=
                     resolve({state:false})
                     console.log("Login Faild");
                }
+            })
+        })
+    },
+    User_Contract_info_FOR_acceptecnce : (info)=>
+    {
+         return new promise((resolve,reject)=>
+         {
+             db.get().collection(consts.userContractdb).insertOne(info).then((res)=>
+             {
+                resolve(res)
+             })
+         })
+    },
+    Check_Whethet_the_Contract_already_commited_or_Not : (userid,wktype)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.userContractdb).findOne({userid:objecTId(userid),wktype:wktype}).then((res)=>
+            {
+                resolve(res)
             })
         })
     }

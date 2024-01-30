@@ -12,6 +12,7 @@ var UserRouter = require('./routes/user');
 var HirerRouter = require('./routes/hiree');
 var AdminRouter = require('./routes/admin');
 var WorkerRouter = require('./routes/workers');
+var SubadminRouter = require('./routes/subadmin');
 
 var app = express();
 
@@ -19,7 +20,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layouts/',partialsDir:__dirname+'/views/partials/'}))
-app.use(session({secret:"key",cookie:{maxAge:60000}}))
+app.use(session({secret:"key",cookie:{maxAge:6000000}}))
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -30,7 +31,7 @@ app.use(fileupload())
 
 app.use('/', UserRouter);
 app.use('/admin', AdminRouter);
-
+app.use('/subadmin', SubadminRouter);
 app.use('/Hiree', HirerRouter);
 app.use('/worker', WorkerRouter);
 
