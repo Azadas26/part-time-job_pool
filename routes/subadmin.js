@@ -94,5 +94,23 @@ router.get("/recruitment",(req,res)=>
          res.redirect("/subadmin/acceptcontractrequest")
     })
 })
+router.get('/runningworks',(req,res)=>
+{
+    subadmindb.Get_WorkS_and_Today_Worker_Details().then((wrks)=>
+    {
+
+        const wrk = wrks.slice(0, 2);
+        console.log(wrk);
+        res.render('./subadmin/running-works',{suba:true,user:req.session.subadmin,wrk,rev:wrk[0]})
+    })
+})
+router.get('/reversewrker',(req,res)=>
+{
+        console.log(req.query.id);
+        subadmindb. Reverse_the_current_active_Workers(req.query.id).then((resc)=>
+        {
+            res.redirect('/subadmin/runningworks')
+        })
+})
 
 module.exports = router;

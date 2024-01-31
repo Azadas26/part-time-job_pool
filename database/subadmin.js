@@ -168,5 +168,101 @@ module.exports =
                 resolve(res)
             })
         })
+    },
+    Get_WorkS_and_Today_Worker_Details : ()=>
+    {
+        return new promise(async(resolve,reject)=>
+        {
+            var wrk =await db.get().collection(consts.assignjob).aggregate([
+                    {
+                        $unwind: "$workers"
+                    },
+                    {
+                        $lookup:
+                        {
+                            from: consts.userContractdb,
+                            localField: "wkid",
+                            foreignField: "_id",
+                            as: 'wkinfo'
+                        }
+                    },
+                    {
+                        $project:
+                        {
+                            userid:1,
+                            workers: 1,
+                            wkinfo:
+                            {
+                                $arrayElemAt: ['$wkinfo', 0]
+                            }
+                        }
+                    },
+                    {
+                        $lookup:
+                        {
+                            from: consts.userbase,
+                            localField: "userid",
+                            foreignField: "_id",
+                            as: 'user'
+                        }
+                    },
+                    {
+                        $project:
+                        {
+                            workerid: "$workers.workerid",
+                            wkinfo:1,
+                            userinfo:
+                            {
+                                $arrayElemAt: ['$user', 0]
+                            }
+                        }
+                    },
+                    {
+                        $lookup:
+                        {
+                            from: consts.workerbase,
+                            localField: "workerid",
+                            foreignField: "_id",
+                            as: 'worker'
+                        }
+                    },
+                    {
+                        $project:
+                        {
+                            wkinfo:1,
+                            userinfo:1,
+                            wrkerinfo:
+                            {
+                                $arrayElemAt: ['$worker', 0] 
+                            }
+                        }
+                    }
+            ]).toArray()
+            resolve(wrk);
+        })
+    },
+    Reverse_the_current_active_Workers : (id)=>
+    {
+        return new promise(async(resolve,reject)=>
+        {
+            var info = await db.get().collection(consts.assignjob).aggregate([
+                {
+                   $match:
+                   {
+                      _id : objectId(id)
+                   }
+                },
+                {
+                    $set: 
+                    {
+                        workers: { $reverseArray: "$workers" }
+                    }
+                },
+                {
+                    $out: consts.assignjob
+                  }
+            ]).toArray()
+            resolve(info);
+        })
     }
 }

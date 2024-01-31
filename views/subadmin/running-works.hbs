@@ -1,0 +1,53 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <table class="table text-light">
+  <thead>
+    <tr>
+      <th scope="col">Number</th>
+      <th scope="col">Shop Name</th>
+      <th scope="col">User Name</th> 
+      <th scope="col">Shop Address</th>
+       <th scope="col">Location</th>
+       <th scope="col">Employee Wanted</th>
+       <th scope="col">Salary per Head</th>
+      <th scope="col">Starting To Ending (Time)</th>
+      <th scope="col">Starting To Ending (Date)</th>
+      <th scope="col">WorkType</th>
+      <th scope="col">User Phone Number</th>
+       <th scope="col">Worker Name</th>
+      <th scope="col">Worker Phone Number</th> 
+    </tr>
+  </thead>
+  <tbody>
+    {{#if wrk}}
+     {{#each wrk}}
+     <tr>          
+       <td>{{@index}}</td>
+       <td>{{this.wkinfo.sname}}</td>
+        <td>{{this.userinfo.name}}</td>
+        
+        <td>{{this.wkinfo.address}}</td>
+        <td><a href="https://www.google.com/maps?q={{this.wkinfo.late}},{{this.wkinfo.long}}" class="btn btn-success">Location</a></td>
+        <td>{{this.wkinfo.empno}}</td>
+        <td>{{this.wkinfo.salary}}</td>
+        <td>{{this.wkinfo.stime}} To {{this.wkinfo.entim}}</td>
+        <td>{{this.wkinfo.sdate}} To {{this.wkinfo.edate}}</td>
+         <td>{{this.wkinfo.wktype}}</td>
+         <td>{{this.userinfo.ph}}</td>
+         <td>{{this.wrkerinfo.name}}</td>
+         <td>{{this.wrkerinfo.ph}}</td>
+         
+     </tr>
+        
+     {{/each}}
+    {{else}}
+        <h1>Nothing Found</h1>
+    {{/if}}
+  </tbody>
+</table>
+<a href="/subadmin/reversewrker?id={{rev._id}}" class="btn btn-success">Reverse</a>
+        </div>
+
+    </div>
+</div>

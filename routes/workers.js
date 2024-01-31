@@ -109,7 +109,7 @@ router.get("/login", (req, res) => {
     if(req.session.wkloginfail)
   {
     res.render("./workers/login-page", {errorlogin:"Invalid Username or Password"});
-    req.session.loginfail = false
+    req.session.wkloginfail = false
   }
   else
   {
