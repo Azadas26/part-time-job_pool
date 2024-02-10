@@ -46,8 +46,46 @@
     {{/if}}
   </tbody>
 </table>
+ <h2 class="text-light">Timer</h2>
+    <p id="display" class="text-light">00:00:00</p>
 <a href="/subadmin/reversewrker?id={{rev._id}}" class="btn btn-success">Reverse</a>
+<p>stime = {{rev.wkinfo.sdate}}</p>
         </div>
 
     </div>
 </div>
+
+ <script>
+      const startTime = new Date("{{rev.wkinfo.sdate}}").getTime(); // Replace with your desired start time
+      const endTime = new Date("{{rev.wkinfo.edate}}").getTime(); // Replace with your desired end time
+      const duration = endTime - startTime;
+      console.log(startTime,endTime)
+      console.log(duration);
+
+      function formatTime(ms) {
+        const date = new Date(ms);
+        const hours = date.getUTCHours().toString().padStart(2, "0");
+        const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+        const seconds = date.getUTCSeconds().toString().padStart(2, "0");
+        return `${hours}:${minutes}:${seconds}`;
+      }
+
+      function updateDisplay() {
+        const currentTime = new Date().getTime() - startTime;
+        console.log(currentTime);
+
+        if (currentTime >= duration) {
+          // Ending time is reached, stop updating the display
+          clearInterval(updateInterval);
+          console.log("Ending time is reached! Perform end action.");
+         // window.location.href = "/subadmin/reversewrker?id={{rev._id}}"; 
+        } else {
+          // Update the display
+          document.getElementById("display").textContent =
+            formatTime(currentTime);
+        }
+      }
+
+      // Update the display every second
+      const updateInterval = setInterval(updateDisplay, 1000);
+    </script>

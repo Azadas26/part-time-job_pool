@@ -94,23 +94,34 @@ router.get("/recruitment",(req,res)=>
          res.redirect("/subadmin/acceptcontractrequest")
     })
 })
-router.get('/runningworks',(req,res)=>
-{
-    subadmindb.Get_WorkS_and_Today_Worker_Details().then((wrks)=>
-    {
-
-        const wrk = wrks.slice(0, 2);
-        console.log(wrk);
-        res.render('./subadmin/running-works',{suba:true,user:req.session.subadmin,wrk,rev:wrk[0]})
-    })
-})
 router.get('/reversewrker',(req,res)=>
 {
         console.log(req.query.id);
         subadmindb. Reverse_the_current_active_Workers(req.query.id).then((resc)=>
         {
-            res.redirect('/subadmin/runningworks')
+            res.redirect('/subadmin/activewrkers')
         })
+})
+router.get('/activeworks',(req,res)=>
+{
+    subadmindb.View_Current_Running_Works_and_user().then((wrk)=>
+    {
+        console.log(wrk);
+        res.render('./subadmin/active-works',{suba:true,user:req.session.subadmin,wrk})
+    })
+})
+router.get("/activewrkers",(req,res)=>
+{
+    console.log(req.query);
+    subadmindb.Get_WorkS_and_Today_Worker_Details().then((wrks)=>
+    {
+         //pending
+       
+        const wrk = wrks.slice(0, parseInt(wrks[0].wkinfo.empno));
+       console.log(wrk[0]);
+        res.render('./subadmin/activework-moreinfo',{suba:true,user:req.session.subadmin,wrk,rev:wrk[0]})
+    })
+    
 })
 
 module.exports = router;

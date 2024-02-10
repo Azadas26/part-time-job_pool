@@ -180,8 +180,19 @@ router.get("/applayjob",verifyworker,(req,res)=>
 })
 router.post("/applayjob",verifyworker,(req,res)=>
 {
-    console.log(req.query.wkid,req.query.userid,req.session.wrker._id);
-    wrkbase. Assign_Worker_to_Their_Redy_To_join(req.query.wkid,req.query.userid,req.session.wrker._id).then((resc)=>
+    var dateArray = null;
+    console.log("Date",req.body);
+    if(req.body.date == "no")
+    {
+      dateArray = null;
+    }
+    else
+    {
+      const preferredDates = req.body.preferredDates;
+       dateArray = preferredDates.split(', ').map(date => new Date(date));
+    }
+   
+    wrkbase. Assign_Worker_to_Their_Redy_To_join(req.query.wkid,req.query.userid,req.session.wrker._id,dateArray).then((resc)=>
     {
       wrkbase.View_available_Jobs().then((jobs)=>
       {

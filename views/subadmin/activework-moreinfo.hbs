@@ -1,0 +1,47 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <table class="table text-light">
+  <thead>
+    <tr>
+         <th scope="col">Number</th> 
+      <th scope="col">Worker Name</th> 
+      <th scope="col">Worker Address</th>
+       <th scope="col">Location</th>
+      <th scope="col">Worker Phone Number</th>
+      <th scope="col">Worker Mail Address</th>
+      <th scope="col">Worker District</th> 
+      <th scope="col">Skilled Or Not</th> 
+      <th scope="col">Worker Aaddhar Number</th> 
+    </tr>
+  </thead>
+  <tbody>
+    {{#if wrk}}
+     {{#each wrk}}
+     <tr>          
+       <td>{{@index}}</td>
+       <td>{{this.wrkerinfo.name}}</td>
+        <td>{{this.wrkerinfo.address}}</td>
+        <td><a href="https://www.google.com/maps?q={{this.wrkerinfo.late}},{{this.wrkerinfo.long}}" class="btn btn-success">Location</a></td>
+        <td>{{this.wrkerinfo.ph}}</td>
+        <td>{{this.wrkerinfo.email}}</td>
+         <td>{{this.wrkerinfo.district}}</td>
+         <td>{{this.wrkerinfo.isskilled}}</td>
+         <td>{{this.wrkerinfo.aadhar}}</td>
+         
+     </tr>
+        
+     {{/each}}
+    {{else}}
+        <h1>Nothing Found</h1>
+    {{/if}}
+  </tbody>
+</table>
+ <h2 class="text-light">Timer</h2>
+    <p id="display" class="text-light">00:00:00</p>
+<a href="/subadmin/reversewrker?id={{rev._id}}" class="btn btn-success">Reverse</a>
+<p>stime = {{rev.wkinfo.sdate}}</p>
+        </div>
+
+    </div>
+</div>

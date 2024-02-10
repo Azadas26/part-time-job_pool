@@ -84,7 +84,7 @@ module.exports=
         })
         
     },
-    Assign_Worker_to_Their_Redy_To_join : (wkid,userid,workerid)=>
+    Assign_Worker_to_Their_Redy_To_join : (wkid,userid,workerid,dates)=>
     {
         return new promise((resolve,reject)=>
         {   
@@ -92,7 +92,8 @@ module.exports=
             {
                 var wrk =
                 {
-                    workerid : objectId(workerid)
+                    workerid : objectId(workerid),
+                    preferredDates: dates && Array.isArray(dates) ? dates.map(date => new Date(date)) : null
                 }
                 if(res)
                 {

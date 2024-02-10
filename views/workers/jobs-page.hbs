@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <div class="container-fluid">
   <div class="row p-5">
       {{#each jobs}}
@@ -14,6 +17,18 @@
               <p class="card-text">{{this.address}}</p>
                <td><a href="https://www.google.com/maps?q={{this.late}},{{this.long}}" class="btn btn-success">Location</a></td>
              <form action="/worker/applayjob?wkid={{this._id}}&userid={{this.userid}}" method="post" class="m-3">
+
+                    <div>
+                      <label for="">Select Your Own Time</label>
+                        <select name="date" id="date" onchange="dat()">
+                         <option value="no">Any Date</option>
+                         <option value="yes">Prefered date</option>                   
+                        </select>
+                    </div> <br>
+                    <div id="selectdate" style="display: none;">
+                        <label for="preferredDates"><b>Choose Preferred Dates</b></label>
+                        <input type="text" id="preferredDates" name="preferredDates" placeholder="Select dates" required>
+                    </div>
                     <input class="btn-outline-warning" type="submit" value="Ready to join">
              </form>
             </div>
@@ -29,3 +44,24 @@
                {{/if}}
   </div>
 </div>
+
+
+<script>
+  function dat()
+  {
+    console.log("callleddd")
+     var selectedValue = document.getElementById("date").value;
+             if(selectedValue == "yes")
+             {
+                    document.getElementById("selectdate").style.display = ""
+             }
+             else
+             {
+                 document.getElementById("selectdate").style.display = "none"
+             }
+  }
+  flatpickr('#preferredDates', {
+        mode: 'multiple',
+        dateFormat: 'Y-m-d',
+    });
+</script>
