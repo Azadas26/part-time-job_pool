@@ -172,9 +172,10 @@ router.post("/otp",(req,res)=>
 })
 router.get("/applayjob",verifyworker,(req,res)=>
 {
+
    wrkbase.View_available_Jobs().then((jobs)=>
    {
-      // console.log(jobs);
+      console.log(jobs);
       res.render('./workers/jobs-page',{wk: true,user:req.session.wrker,jobs})
    })
 })
@@ -191,23 +192,26 @@ router.post("/applayjob",verifyworker,(req,res)=>
       const preferredDates = req.body.preferredDates;
        dateArray = preferredDates.split(', ').map(date => new Date(date));
     }
-   
-    wrkbase. Assign_Worker_to_Their_Redy_To_join(req.query.wkid,req.query.userid,req.session.wrker._id,dateArray).then((resc)=>
+    wrkbase. Evaluvate_The_Worker_Count_CompairWithDate_andCount(req.query.userid,req.query.wkid).then((fill)=>
     {
-      wrkbase.View_available_Jobs().then((jobs)=>
+      wrkbase. Assign_Worker_to_Their_Redy_To_join(req.query.wkid,req.query.userid,req.session.wrker._id,dateArray).then((resc)=>
       {
-         // console.log(jobs);
-        
-         if(resc)
-         {
-          res.render('./workers/jobs-page',{wk: true,user:req.session.wrker,jobs,already:"Your Already In"})
-         }
-         else
-         {
-          res.render('./workers/jobs-page',{wk: true,user:req.session.wrker,jobs,succ:"Requested Successfully Commited"})
-         }
+        wrkbase.View_available_Jobs().then((jobs)=>
+        {
+           // console.log(jobs);
+           console.log("i fills",fill);
+           if(resc)
+           {
+            res.render('./workers/jobs-page',{wk: true,user:req.session.wrker,jobs,fill,already:"Your Already In"})
+           }
+           else
+           {
+            res.render('./workers/jobs-page',{wk: true,user:req.session.wrker,jobs,fill,succ:"Requested Successfully Commited"})
+           }
+        })
       })
     })
+    
 })
 
 module.exports = router;

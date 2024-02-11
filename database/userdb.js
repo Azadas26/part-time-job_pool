@@ -95,5 +95,15 @@ module.exports=
                 resolve(res)
             })
         })
+    },
+    Check_whether_The_admin_accepted_ThatRequest_OR_NoT : (userid,wkid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.userContractdb).findOne({userid:objecTId(userid),_id:objecTId(wkid),ctaccept:true}).then((res)=>
+            {
+                resolve(res)
+            })
+        })
     }
 }

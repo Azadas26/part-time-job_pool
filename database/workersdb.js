@@ -134,5 +134,61 @@ module.exports=
                 }
             })
         })
+    },
+    Evaluvate_The_Worker_Count_CompairWithDate_andCount:(userid,wkid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.userContractdb).findOne({userid:objectId(userid),_id:objectId(wkid)}).then((res)=>
+            {
+                //console.log(res);
+                const startDate = new Date(res.sdate);
+                const endDate = new Date(res.edate);
+                // Calculate the difference in milliseconds
+                const timeDifference = endDate - startDate;
+                // Convert milliseconds to days
+                const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24))+1;
+                var maxemp = daysDifference * res.empno
+                console.log(maxemp);
+                db.get().collection(consts.assignjob).findOne({userid:objectId(userid),wkid:objectId(wkid)}).then((wrkinfo)=>
+                {
+                  console.log("Array Length",wrkinfo);
+                  if(wrkinfo)
+                  {
+                    if(maxemp > (wrkinfo.workers.length+1))
+                    {
+                         resolve(false)
+                         resolve(false)
+                         db.get().collection(consts.userContractdb).updateOne({userid:objectId(userid),_id:objectId(wkid)},
+                         {
+                            $set:
+                            {
+                                isfull:false
+                            }
+                         })
+                    }
+                    else
+                    {
+                         resolve(true)
+                         resolve(false)
+                         db.get().collection(consts.userContractdb).updateOne({userid:objectId(userid),_id:objectId(wkid)},
+                         {
+                            $set:
+                            {
+                                isfull:true
+                            }
+                         })
+                    }
+                  }
+                  else
+                  {
+                    resolve(false)
+                  }
+
+                })
+
+
+            })
+        })
     }
 }

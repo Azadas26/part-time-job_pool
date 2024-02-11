@@ -167,9 +167,20 @@ router.get("/reqcontract",verfyuserlogin,(req,res)=>
   console.log(req.session.user._id,req.query.wktype);
     usebase.Check_Whethet_the_Contract_already_commited_or_Not(req.session.user._id,req.query.wktype).then((reqexist)=>
     {
+      console.log(reqexist);
         if(reqexist)
         {
-          res.render('./users/contract-page',{userhd:true,user:req.session.user,reqexist})
+          usebase.Check_whether_The_admin_accepted_ThatRequest_OR_NoT(req.session.user._id,reqexist._id).then((accepted)=>
+          {
+            if(accepted)
+            {
+              res.render('./users/contract-page',{userhd:true,user:req.session.user,reqexist,accepted})
+            }
+            else
+          {
+            res.render('./users/contract-page',{userhd:true,user:req.session.user,reqexist})
+          } 
+          })
         }
         else
         {
@@ -183,6 +194,9 @@ router.post("/reqcontract",verfyuserlogin,(req,res)=>
    req.body.userid = objectId(req.session.user._id);
    req.body.wktype = req.query.wktype;
    req.body.ctaccept = false
+   req.body.empno = Number(req.body.empno);
+  req.body.salary = Number(req.body.salary);
+  req.body.isfull = false
    usebase.User_Contract_info_FOR_acceptecnce(req.body).then((info)=>
    {
         res.redirect('/reqcontract')

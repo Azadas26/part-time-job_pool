@@ -1,10 +1,15 @@
-<div class="container-fluid">
+<div class="container-fluid m-3">
   <div class="row p-5">
     <div class="col-md-6 p-5">
       <div class="card text-light" style="width: 100%;background-color: #15181e;;">
         {{#if reqexist}}
+          {{#if accepted}}
+             <h1>Your Contract Request is accepted by admin and jon requretment is going</h1>
+          {{else}}
               <h1>Your are Already Requested Wait For our responce</h1>
+          {{/if}}
         {{else}}
+        
             <form class="p-5" action="/reqcontract?wktype=sm" method="post" enctype="multipart/form-data" id="usersignupform">
                 <h1 class="text-center" style="font-weight: 800;"><b>Enter Shop Details</b>
                 </h1>
@@ -83,10 +88,10 @@
                     <div style="display: flex;
             justify-content: space-between;">
                         
-                        <input name="sdate" type="datetime-local" class="form-control" id="exampleInputEmail1"
+                        <input name="sdate" type="date" class="form-control" id="exampleInputEmail1"
                         aria-describedby="emailHelp" placeholder="Start" style="width: 40%;">
                          <label for="exampleInputEmail1"><b>To  </b></label>
-                          <input name="edate" type="datetime-local" class="form-control" id="exampleInputEmail1"
+                          <input name="edate" type="date" class="form-control" id="exampleInputEmail1"
                         aria-describedby="emailHelp" placeholder="End" style="width: 40%;">
                     </div>
 
