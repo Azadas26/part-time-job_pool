@@ -1,7 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light pr-4 pl-4" style="background: transparent;position: fixed;z-index: 2;width: 100%;">
-  <div class="" style="text-align: center;">
-    <a class="navbar-brand text-light" href="#"><b>Navbar</b></a>
-  </div>
+  <a class="navbar-brand text-light" href="#"><b>Navbar</b></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -14,23 +12,9 @@
      
     </ul>
     <div class="mr-3">
-      <nav class="navbar">
-       <form class="form-inline" >
-        <input class="form-control mr-sm-2" type="text" list="choosing" placeholder="Search">
-       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-       <datalist id="choosing">
-         <option value="super rmarket"></option>
-         <option value="home nurse"></option>
-         <option value="meson"></option>
-         <option value="catering"></option>
-       </datalist>
-       </form>
-      </nav>
-    </div>
-    <div class="pulsing mr-3">
       <button type="button" class="icon-button">
       <span class="material-icons">notifications</span>
-      <span class="icon-button__badge">2</span>
+      <span class="icon-button__badge">22</span>
     </button>
     </div>
     <div class="dropdown">
@@ -54,25 +38,3 @@
 </div>
   </div>
 </nav>
-
-
-{{#if user}}
-  <style>
-  .pulsing
-  {
-   
-    animation: pulse 2s infinite;
-    border-radius: 50%;
-  }
-  @keyframes pulse {
-      0%
-      {
-        box-shadow: 0 0 0 0px #15181e;
-      }
-      100%
-      {
-        box-shadow: 0 0 0 35px #191d24;
-      }
-    }
-</style>
-{{/if}}
