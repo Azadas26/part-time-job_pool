@@ -37,11 +37,95 @@
     {{/if}}
   </tbody>
 </table>
- <h2 class="text-light">Timer</h2>
-    <p id="display" class="text-light">00:00:00</p>
-<a href="/subadmin/reversewrker?id={{rev._id}}" class="btn btn-success">Reverse</a>
-<p>stime = {{rev.wkinfo.sdate}}</p>
+<div class="text-light">
+  {{#if datebetween}}
+  {{!-- ################################################################################################### --}}
+      <div id="timer">00:00:00</div>
+       <style>
+    #timer {
+      font-size: 64px;
+      font-weight: bold;
+      width: 90vw; /* Set the width to 30% of the viewport width */
+      height: auto; /* Automatically adjust height based on content */
+    }
+  </style>
+   {{!-- ################################################################################################### --}}
+  {{/if}}
+
+  {{#if datealreadyend}}
+    <h1>This Contract already expired</h1>
+  {{/if}}
+  {{#if datenotreached}}
+     <h1>Work progress only between {{rev.wkinfo.sdate}} and {{rev.wkinfo.edate}}</h1>
+  {{/if}}
+</div>
         </div>
 
     </div>
 </div>
+
+<script>
+  // Example time strings in "HH:mm" format
+  const startTimeString = "{{rev.wkinfo.stime}}";
+  const endTimeString = "{{rev.wkinfo.entim}}";
+  console.log("{{rev.wkinfo.stime}}")
+  // Split the time strings into hours and minutes
+  const [startHoursString, startMinutesString] = startTimeString.split(":");
+  const [endHoursString, endMinutesString] = endTimeString.split(":");
+
+  // Convert hours and minutes to integers
+  const startHours = parseInt(startHoursString, 10);
+  const startMinutes = parseInt(startMinutesString, 10);
+  const endHours = parseInt(endHoursString, 10);
+  const endMinutes = parseInt(endMinutesString, 10);
+
+  // Create new Date objects for start and end times
+  const startDate = new Date();
+  startDate.setHours(startHours, startMinutes, 0, 0);
+
+  const endDate = new Date();
+  endDate.setHours(endHours, endMinutes, 0, 0);
+
+  // Check if redirection has already occurred today
+  let redirectionOccurred = localStorage.getItem('redirectionOccurred') === 'true';
+
+  // Update the timer every second
+  const timerInterval = setInterval(updateTimer, 1000);
+
+  function updateTimer() {
+    const currentTime = new Date();
+
+    // Check if current time is within the date range
+    if (currentTime >= startDate && currentTime <= endDate) {
+      const elapsedTime = currentTime - startDate;
+      const hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+      const minutes = Math.floor(
+        (elapsedTime % (1000 * 60 * 60)) / (1000 * 60)
+      );
+      const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+
+      document.getElementById("timer").textContent = `${formatTime(
+        hours
+      )}:${formatTime(minutes)}:${formatTime(seconds)}`;
+      
+    } else {
+      // Stop the timer if it's outside the specified date range
+      clearInterval(timerInterval);
+      document.getElementById("timer").textContent = "Todays Work Completed";
+
+      // Redirect to another webpage if redirection has not already occurred today
+      if (!redirectionOccurred) {
+        localStorage.setItem('redirectionOccurred', 'true'); // Set the flag indicating redirection has occurred
+        window.location.href = `http://localhost:3000/subadmin/reversewrker?id={{rev._id}}`;
+      }
+
+      // Clear the interval to prevent further calls to updateTimer
+      clearInterval(timerInterval);
+    }
+  }
+
+  function formatTime(time) {
+    return time < 10 ? `0${time}` : time;
+  }
+</script>
+

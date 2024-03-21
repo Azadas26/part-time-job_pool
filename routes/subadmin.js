@@ -113,13 +113,29 @@ router.get('/activeworks',(req,res)=>
 router.get("/activewrkers",(req,res)=>
 {
     console.log(req.query);
-    subadmindb.Get_WorkS_and_Today_Worker_Details().then((wrks)=>
+    subadmindb.Get_WorkS_and_Today_Worker_Details().then(async(wrks)=>
     {
-         //pending
+         var date = require('../connection/date')
        
         const wrk = wrks.slice(0, parseInt(wrks[0].wkinfo.empno));
-       console.log(wrk[0]);
-        res.render('./subadmin/activework-moreinfo',{suba:true,user:req.session.subadmin,wrk,rev:wrk[0]})
+        console.log(wrk[0]);
+        var today = new Date()
+        date.date_Between_StartAnd_End(wrk[0].wkinfo.sdate,wrk[0].wkinfo.edate,today.toISOString().split('T')[0]).then((contractdate)=>
+        {
+            res.render('./subadmin/activework-moreinfo',{suba:true,user:req.session.subadmin,wrk,rev:wrk[0],datebetween:contractdate})
+        }).catch((contractdate)=>
+        {
+            //console.log(contractdate);
+           if(contractdate)
+           {
+            res.render('./subadmin/activework-moreinfo',{suba:true,user:req.session.subadmin,wrk,rev:wrk[0],datealreadyend:contractdate})
+           }
+           else
+           {
+            res.render('./subadmin/activework-moreinfo',{suba:true,user:req.session.subadmin,wrk,rev:wrk[0],datenotreached:true})
+           }
+        })
+       
     })
     
 })

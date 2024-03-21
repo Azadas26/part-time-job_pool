@@ -197,6 +197,7 @@ router.post("/reqcontract",verfyuserlogin,(req,res)=>
    req.body.empno = Number(req.body.empno);
   req.body.salary = Number(req.body.salary);
   req.body.isfull = false
+  req.body.pay = false;
    usebase.User_Contract_info_FOR_acceptecnce(req.body).then((info)=>
    {
         res.redirect('/reqcontract')
