@@ -139,5 +139,16 @@ router.get("/activewrkers",(req,res)=>
     })
     
 })
+router.get("/reqpay",(req,res)=>
+{
+    console.log(req.query.userid,req.query.wkid);
+   subadmindb.PayMent_request_TO_User_Message(req.query.userid,req.query.wkid).then((resc)=>
+   {
+      subadmindb. Blurr_Payment_request_After_admin_requesting(req.query.userid,req.query.wkid).then((resc)=>
+      {
+          res.redirect('/subadmin/activeworks')
+      })
+   })
+})
 
 module.exports = router;

@@ -79,7 +79,7 @@ module.exports=
     {
         return new promise((resolve,reject)=>
         {
-            var jobs = db.get().collection(consts.userContractdb).find().toArray()
+            var jobs = db.get().collection(consts.userContractdb).find({pay:true}).toArray()
             resolve(jobs)
         })
         

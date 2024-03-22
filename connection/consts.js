@@ -9,6 +9,7 @@ module.exports =
    hireebase : "Hireebase",
    hireetmp : "HireeTemp",
    subadmin : "SubAdmin",
-   assignjob:"AssignJobDb"
+   assignjob:"AssignJobDb",
+   messagedb:"MessadeDB"
 
 }

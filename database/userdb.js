@@ -105,5 +105,26 @@ module.exports=
                 resolve(res)
             })
         })
+    },
+    Get_all_Notifications : (userid)=>
+    {
+        return new promise(async(resolve,reject)=>
+        {
+            var notifications = await db.get().collection(consts.messagedb).aggregate(
+                [
+                    {
+                        $match:
+                        {
+                            userid:objecTId(userid)
+                        }
+                    },
+                    {
+                        $unwind:"$info"
+                    }
+                ]
+            ).toArray()
+            console.log(notifications)
+            resolve(notifications)
+        })
     }
 }

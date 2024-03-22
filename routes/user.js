@@ -204,4 +204,11 @@ router.post("/reqcontract",verfyuserlogin,(req,res)=>
    })
 
 })
+router.get('/notification',verfyuserlogin,(req,res)=>
+{
+    usebase. Get_all_Notifications(req.session.user._id).then((nots)=>
+    {
+      res.render('./users/notification-page',{userhd:true,user:req.session.user,nots})
+    })
+})
 module.exports = router;

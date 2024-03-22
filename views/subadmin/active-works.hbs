@@ -9,10 +9,26 @@
             <h5 class="card-title">Owner Name : {{this.userinfo.name}}</h5>
             <p class="card-text">{{this.wkinfo.address}}</p>
             <a href="/subadmin/activewrkers?wkid={{this.wkinfo._id}}&userid={{this.userinfo._id}}" class="btn btn-primary">Go somewhere</a>
-             <a href="/subadmin/reqpay??wkid={{this.wkinfo._id}}&userid={{this.userinfo._id}}" class="btn btn-success">Request To Pay</a>
+            {{#if this.wkinfo.isreqpay}}
+            <br>
+            <br>
+            <br>
+              <button class="btn btn-success" onclick="req()">Request To Pay</button>
+              <br><br><small id="reqs" class="text-danger"></small>
+            {{else}}
+              <a href="/subadmin/reqpay?wkid={{this.wkinfo._id}}&userid={{this.userinfo._id}}" class="btn btn-success">Request To Pay</a>
+            {{/if}}
           </div>
         </div>
       </div>
     {{/each}}
   </div>
 </div>
+
+<script>
+  function req()
+  {
+    console.log("called")
+    document.getElementById('reqs').innerHTML ="Already requested no wait for th user resonce"
+  }
+</script>

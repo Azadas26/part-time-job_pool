@@ -332,4 +332,89 @@ module.exports = {
       resolve(workers);
     });
   },
+  PayMent_request_TO_User_Message :(userid,wkid)=>
+  {
+    return new promise((resolve,reject)=>
+    {
+       db.get().collection(consts.messagedb).findOne({userid:objectId(userid),wkid:objectId(wkid)}).then(async(res)=>
+       {
+          var pay=
+          {
+            msg:null,
+            reqpay:true,
+          };
+           if(res)
+           {
+            await db.get().collection(consts.userContractdb).findOne({userid:objectId(userid),_id:objectId(wkid)}).then((info)=>
+            {
+              const startDate = new Date(info.sdate);
+              const endDate = new Date(info.edate);
+
+              const differenceMs = endDate - startDate;
+
+
+             const daysDifference = Math.floor(differenceMs / (1000 * 60 * 60 * 24))+1;
+             var total = daysDifference * info.empno * info.salary;
+             pay.msg = "Please Pay"+total+"To Complete Job Recruitment"
+             //console.log("Total Amount is"+pay.amount);
+            })
+              await db.get().collection(consts.messagedb).updateOne({userid:objectId(userid),wkid:objectId(wkid)},
+              {
+                $push:
+                {
+                  info:pay,
+                  
+                }
+              }).then((resc)=>
+              {
+                resolve(resc)
+              })
+           }
+           else
+           {
+            
+            await db.get().collection(consts.userContractdb).findOne({userid:objectId(userid),_id:objectId(wkid)}).then((info)=>
+            {
+              const startDate = new Date(info.sdate);
+              const endDate = new Date(info.edate);
+
+              const differenceMs = endDate - startDate;
+
+
+             const daysDifference = Math.floor(differenceMs / (1000 * 60 * 60 * 24))+1;
+
+             var total = daysDifference * info.empno * info.salary;
+             pay.msg = "Please Pay "+total+" To Complete Job Recruitment"
+            // console.log("Total Amount is"+pay.amount);
+            })
+              var msg = 
+              {
+                 userid : objectId(userid),
+                 wkid : objectId(wkid),
+                 info:[pay]
+              }
+              db.get().collection(consts.messagedb).insertOne(msg).then((res)=>
+              {
+                resolve(res)
+              })
+           }
+       })
+    })
+  },
+  Blurr_Payment_request_After_admin_requesting : (userid,wkid)=>
+  {
+      return new promise(async(resolve,reject)=>
+      {
+        await db.get().collection(consts.userContractdb).updateOne({userid:objectId(userid),_id:objectId(wkid)},
+         {
+          $set:
+          {
+            isreqpay: true
+          }
+         }).then((resc)=>
+         {
+           resolve(resc)
+         })
+      })
+  }
 };
