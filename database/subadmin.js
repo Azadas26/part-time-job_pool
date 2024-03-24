@@ -251,44 +251,62 @@ module.exports = {
     return new promise(async (resolve, reject) => {
       var wrk = await db
         .get()
-        .collection(consts.assignjob)
+        .collection(consts.userContractdb)
         .aggregate([
-          {
-            $lookup: {
-              from: consts.userContractdb,
-              localField: "wkid",
-              foreignField: "_id",
-              as: "wkinfo",
-            },
-          },
-          {
-            $project: {
-              userid: 1,
-              wkinfo: {
-                $arrayElemAt: ["$wkinfo", 0],
-              },
-            },
-          },
           {
             $lookup: {
               from: consts.userbase,
               localField: "userid",
               foreignField: "_id",
-              as: "userinfo",
+              as: "user",
             },
           },
           {
             $project: {
+              _id: 1,
+              sname: 1,
+              lno: 1,
+              address: 1,
+              district: 1,
+              late: 1,
+              long: 1,
+              empno: 2,
+              salary: 400,
+              stime: 1,
+              entim: 1,
+              sdate: 1,
+              edate: 1,
               userid: 1,
-              wkinfo: 1,
-              userinfo: {
-                $arrayElemAt: ["$userinfo", 0],
+              wktype: 1,
+              ctaccept: 1,
+              isfull: 1,
+              pay: 1,
+              isreqpay:1,
+              wkinfo: {
+                $arrayElemAt: ["$user", 0],
               },
             },
           },
+          // {
+          //   $lookup: {
+          //     from: consts.userbase,
+          //     localField: "userid",
+          //     foreignField: "_id",
+          //     as: "userinfo",
+          //   },
+          // },
+          // {
+          //   $project: {
+          //     userid: 1,
+          //     wkinfo: 1,
+          //     userinfo: {
+          //       $arrayElemAt: ["$userinfo", 0],
+          //     },
+          //   },
+          // },
         ])
         .toArray();
-      //console.log(wrk);
+      // console.log(wrk);
       resolve(wrk);
     });
   },
@@ -332,89 +350,139 @@ module.exports = {
       resolve(workers);
     });
   },
-  PayMent_request_TO_User_Message :(userid,wkid)=>
-  {
-    return new promise((resolve,reject)=>
-    {
-       db.get().collection(consts.messagedb).findOne({userid:objectId(userid),wkid:objectId(wkid)}).then(async(res)=>
-       {
-          var pay=
-          {
-            msg:null,
-            reqpay:true,
+  PayMent_request_TO_User_Message: (userid, wkid) => {
+    return new promise((resolve, reject) => {
+      db.get()
+        .collection(consts.messagedb)
+        .findOne({ userid: objectId(userid), wkid: objectId(wkid) })
+        .then(async (res) => {
+          var pay = {
+            msg: null,
+            reqpay: true,
           };
-           if(res)
-           {
-            await db.get().collection(consts.userContractdb).findOne({userid:objectId(userid),_id:objectId(wkid)}).then((info)=>
-            {
-              const startDate = new Date(info.sdate);
-              const endDate = new Date(info.edate);
+          if (res) {
+            await db
+              .get()
+              .collection(consts.userContractdb)
+              .findOne({ userid: objectId(userid), _id: objectId(wkid) })
+              .then((info) => {
+                const startDate = new Date(info.sdate);
+                const endDate = new Date(info.edate);
 
-              const differenceMs = endDate - startDate;
+                const differenceMs = endDate - startDate;
 
-
-             const daysDifference = Math.floor(differenceMs / (1000 * 60 * 60 * 24))+1;
-             var total = daysDifference * info.empno * info.salary;
-             pay.msg = "Please Pay"+total+"To Complete Job Recruitment"
-             //console.log("Total Amount is"+pay.amount);
-            })
-              await db.get().collection(consts.messagedb).updateOne({userid:objectId(userid),wkid:objectId(wkid)},
-              {
-                $push:
+                const daysDifference =
+                  Math.floor(differenceMs / (1000 * 60 * 60 * 24)) + 1;
+                var total = daysDifference * info.empno * info.salary;
+                pay.msg = "Please Pay " + total + " To Complete Job Recruitment";
+                //console.log("Total Amount is"+pay.amount);
+              });
+            await db
+              .get()
+              .collection(consts.messagedb)
+              .updateOne(
+                { userid: objectId(userid), wkid: objectId(wkid) },
                 {
-                  info:pay,
-                  
+                  $push: {
+                    info: pay,
+                  },
                 }
-              }).then((resc)=>
-              {
-                resolve(resc)
-              })
-           }
-           else
-           {
-            
-            await db.get().collection(consts.userContractdb).findOne({userid:objectId(userid),_id:objectId(wkid)}).then((info)=>
-            {
-              const startDate = new Date(info.sdate);
-              const endDate = new Date(info.edate);
+              )
+              .then((resc) => {
+                resolve(resc);
+              });
+          } else {
+            await db
+              .get()
+              .collection(consts.userContractdb)
+              .findOne({ userid: objectId(userid), _id: objectId(wkid) })
+              .then((info) => {
+                const startDate = new Date(info.sdate);
+                const endDate = new Date(info.edate);
 
-              const differenceMs = endDate - startDate;
+                const differenceMs = endDate - startDate;
 
+                const daysDifference =
+                  Math.floor(differenceMs / (1000 * 60 * 60 * 24)) + 1;
 
-             const daysDifference = Math.floor(differenceMs / (1000 * 60 * 60 * 24))+1;
-
-             var total = daysDifference * info.empno * info.salary;
-             pay.msg = "Please Pay "+total+" To Complete Job Recruitment"
-            // console.log("Total Amount is"+pay.amount);
-            })
-              var msg = 
-              {
-                 userid : objectId(userid),
-                 wkid : objectId(wkid),
-                 info:[pay]
-              }
-              db.get().collection(consts.messagedb).insertOne(msg).then((res)=>
-              {
-                resolve(res)
-              })
-           }
-       })
-    })
-  },
-  Blurr_Payment_request_After_admin_requesting : (userid,wkid)=>
-  {
-      return new promise(async(resolve,reject)=>
-      {
-        await db.get().collection(consts.userContractdb).updateOne({userid:objectId(userid),_id:objectId(wkid)},
-         {
-          $set:
-          {
-            isreqpay: true
+                var total = daysDifference * info.empno * info.salary;
+                pay.msg =
+                  "Please Pay " + total + " To Complete Job Recruitment";
+                // console.log("Total Amount is"+pay.amount);
+              });
+            var msg = {
+              userid: objectId(userid),
+              wkid: objectId(wkid),
+              info: [pay],
+            };
+            db.get()
+              .collection(consts.messagedb)
+              .insertOne(msg)
+              .then((res) => {
+                resolve(res);
+              });
           }
-         }).then((resc)=>
-         {
-           resolve(resc)
-         })
-      })
-  }
+        });
+    });
+  },
+  Blurr_Payment_request_After_admin_requesting: (userid, wkid) => {
+    return new promise(async (resolve, reject) => {
+      await db
+        .get()
+        .collection(consts.userContractdb)
+        .updateOne(
+          { userid: objectId(userid), _id: objectId(wkid) },
+          {
+            $set: {
+              isreqpay: true,
+            },
+          }
+        )
+        .then((resc) => {
+          resolve(resc);
+        });
+    });
+  },
+  If_SUB_admin_accept_job_Contractrequest_Notify_Is_accept: (wkid, userid) => {
+    return new promise(async (resolve, reject) => {
+      await db
+        .get()
+        .collection(consts.messagedb)
+        .findOne({ _id: objectId(wkid), userid: objectId(userid) })
+        .then(async (info) => {
+          var infos = {
+            msg: "Your Contract Request Accepted Waiting For Payment Request And Final Ckeck <br><h3>Have A Good Day </h3>",
+          };
+          if (info) {
+            await db
+              .get()
+              .collection(consts.messagedb)
+              .updateOne(
+                { userid: objectId(userid), wkid: objectId(wkid) },
+                {
+                  $push: {
+                    info: infos,
+                  },
+                }
+              )
+              .then((resc) => {
+                resolve(resc);
+              });
+          } else {
+            var status = {
+              userid: objectId(userid),
+              wkid: objectId(wkid),
+              viewed:false,
+              info: [infos],
+            };
+            db.get()
+              .collection(consts.messagedb)
+              .insertOne(status)
+              .then((res) => {
+                resolve(res);
+              });
+          }
+        });
+    });
+  },
 };

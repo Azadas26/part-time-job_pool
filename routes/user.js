@@ -27,7 +27,19 @@ var verifyotp =
 router.get("/", function (req, res, next) {
   if( req.session.user)
   {
-    res.render("./users/first-page", { userhd: true,user:req.session.user});
+    usebase.is_Notificaton_available_or_not(req.session.user._id).then((notification)=>
+    {
+      console.log(notification);
+      if(notification)
+      {
+        res.render("./users/first-page", { userhd: true,user:req.session.user,notify:true});
+      }
+      else
+      {
+        res.render("./users/first-page", { userhd: true,user:req.session.user});
+      }
+      
+    })
   }
   else
   {
@@ -198,6 +210,7 @@ router.post("/reqcontract",verfyuserlogin,(req,res)=>
   req.body.salary = Number(req.body.salary);
   req.body.isfull = false
   req.body.pay = false;
+  req.body.isreqpay = false;
    usebase.User_Contract_info_FOR_acceptecnce(req.body).then((info)=>
    {
         res.redirect('/reqcontract')
@@ -208,7 +221,11 @@ router.get('/notification',verfyuserlogin,(req,res)=>
 {
     usebase. Get_all_Notifications(req.session.user._id).then((nots)=>
     {
-      res.render('./users/notification-page',{userhd:true,user:req.session.user,nots})
+      usebase.Turn_off_notification_whe_user_already_viwed(req.session.user._id).then(()=>
+      {
+        res.render('./users/notification-page',{userhd:true,user:req.session.user,nots})
+      }) 
+      
     })
 })
 module.exports = router;

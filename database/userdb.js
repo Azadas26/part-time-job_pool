@@ -126,5 +126,38 @@ module.exports=
             console.log(notifications)
             resolve(notifications)
         })
+    },
+    is_Notificaton_available_or_not : (userid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.messagedb).findOne({userid:objecTId(userid),viewed:false}).then((resc)=>
+            {
+                if(resc)
+                {
+                    resolve(true)
+                }
+                else
+                {
+                    resolve(false)
+                }
+            })
+        })
+    },
+    Turn_off_notification_whe_user_already_viwed : (userid)=>
+    {
+        return new promise(async(resolve,reject)=>
+        {
+            await db.get().collection(consts.messagedb).updateOne({userid:objecTId(userid)},
+            {
+                $set:
+                {
+                    viewed : true
+                }
+            }).then(()=>
+            {
+                resolve()
+            })
+        })
     }
 }

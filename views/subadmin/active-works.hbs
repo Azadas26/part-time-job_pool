@@ -1,29 +1,4 @@
-<div class="container-fluid">
-  <div class="row p-5">
-    {{#each wrk}}
-      <div class="col-md-3 m-auto">
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap" />
-          <div class="card-body">
-            <h5 class="card-title">Shop Name : {{this.wkinfo.sname}}</h5>
-            <h5 class="card-title">Owner Name : {{this.userinfo.name}}</h5>
-            <p class="card-text">{{this.wkinfo.address}}</p>
-            <a href="/subadmin/activewrkers?wkid={{this.wkinfo._id}}&userid={{this.userinfo._id}}" class="btn btn-primary">Go somewhere</a>
-            {{#if this.wkinfo.isreqpay}}
-            <br>
-            <br>
-            <br>
-              <button class="btn btn-success" onclick="req()">Request To Pay</button>
-              <br><br><small id="reqs" class="text-danger"></small>
-            {{else}}
-              <a href="/subadmin/reqpay?wkid={{this.wkinfo._id}}&userid={{this.userinfo._id}}" class="btn btn-success">Request To Pay</a>
-            {{/if}}
-          </div>
-        </div>
-      </div>
-    {{/each}}
-  </div>
-</div>
+
 
 <script>
   function req()
@@ -32,3 +7,38 @@
     document.getElementById('reqs').innerHTML ="Already requested no wait for th user resonce"
   }
 </script>
+
+
+<div class="container-fluid">
+  <div class="row p-5">
+    {{#each wrk}}
+      <div class="col-md-3 m-auto">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="..." alt="Card image cap" />
+          <div class="card-body">
+            <h5 class="card-title">Shop Name : {{this.sname}}</h5>
+            <h5 class="card-title">Owner Name : {{this.userinfo.name}}</h5>
+            <p class="card-text">{{this.address}}</p>
+            <a
+              href="/subadmin/activewrkers?wkid={{this._id}}&userid={{this.wkinfo._id}}"
+              class="btn btn-primary"
+            >Go somewhere</a>
+            {{#if this.isreqpay}}
+              <br />
+              <br />
+              <br />
+              <button class="btn btn-success" onclick="req()">Request To Pay</button>
+              <br /><br /><small id="reqs" class="text-danger"></small>
+            {{else}}
+              <a
+                href="/subadmin/reqpay?wkid={{this._id}}&userid={{this.wkinfo._id}}"
+                class="btn btn-success"
+              >Request To Pay</a>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>
+

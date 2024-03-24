@@ -91,7 +91,10 @@ router.get("/recruitment",(req,res)=>
 {
     subadmindb.Accept_user_Jobequest_AND_Notify_WorkerS(req.query.jobid,req.query.userid).then((resc)=>
     {
-         res.redirect("/subadmin/acceptcontractrequest")
+        subadmindb.If_SUB_admin_accept_job_Contractrequest_Notify_Is_accept(req.query.jobid,req.query.userid).then((resc)=>
+        {
+            res.redirect("/subadmin/acceptcontractrequest");
+        })
     })
 })
 router.get('/reversewrker',(req,res)=>
@@ -106,7 +109,7 @@ router.get('/activeworks',(req,res)=>
 {
     subadmindb.View_Current_Running_Works_and_user().then((wrk)=>
     {
-        console.log(wrk);
+        console.log("....",wrk);
         res.render('./subadmin/active-works',{suba:true,user:req.session.subadmin,wrk})
     })
 })

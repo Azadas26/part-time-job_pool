@@ -22,9 +22,8 @@
       <li class="nav-item active">
         <a class="nav-link" href="#"><span class="sr-only">(current)</span></a>
       </li>
-
     </ul>
-    <div class="mr-3">
+    <div class="mr-2">
       <nav class="navbar">
         <form class="form-inline">
           <input
@@ -38,7 +37,7 @@
             type="submit"
           >Search</button>
           <datalist id="choosing">
-            <option value="super rmarket"></option>
+            <option value="supermarket"></option>
             <option value="home nurse"></option>
             <option value="ceson"></option>
             <option value="catering"></option>
@@ -46,16 +45,23 @@
         </form>
       </nav>
     </div>
-    <div class="pulsing mr-3">
-      <a href="/notification" class="icon-button" style="text-decoration: none;">
+    <div class="shake-icon mr-3">
+      <a
+        href="/notification"
+        class="icon-button"
+        style="text-decoration: none;"
+      >
         <span class="material-icons">notifications</span>
-        <span class="icon-button__badge">2</span>
+        {{#if notify}}
+          <span class="icon-button__badge">!</span>
+        {{else}}
+        {{/if}}
       </a>
     </div>
     <div class="dropdown">
       <button
         class="btn dropdown-toggle text-light"
-        style="background-color: #15181e;;"
+        style="background-color: #15181e;"
         type="button"
         id="dropdownMenuButton"
         data-toggle="dropdown"
@@ -82,10 +88,24 @@
   </div>
 </nav>
 
-{{#if user}}
+{{#if notify}}
   <style>
-    .pulsing { animation: pulse 2s infinite; border-radius: 50%; } @keyframes
-    pulse { 0% { box-shadow: 0 0 0 0px #15181e; } 100% { box-shadow: 0 0 0 35px
-    #191d24; } }
+    .shake-icon { animation: shake 0.5s infinite; border-radius: 50%; }
+    @keyframes shake { 0% { transform: translateX(0); } 25% { transform:
+    translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform:
+    translateX(-5px); } 100% { transform: translateX(0); } }
   </style>
 {{/if}}
+
+<!-- Chat Button -->
+<button
+  id="chat-button"
+  style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"
+  onclick="openChatPage()"
+>Chat</button>
+
+<!-- JavaScript to open chat page -->
+<script>
+  function openChatPage() { window.open('/chat', '_blank',
+  'width=400,height=400'); }
+</script>

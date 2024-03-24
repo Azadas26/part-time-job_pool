@@ -8,19 +8,21 @@
             <h5 class="text-light ml-5">
               {{this.info.msg}} !</h5>
             <a href="/payform" class="ml-5 btn btn-success">Pay</a>
+             </div>
+             <br>
           {{else}}
             <div class="col-md-6 offset-md-6 message-box-no" style="background-color: green;"> <!-- Added offset-md-6 to align to the right -->
             <h5 class="text-light ml-5">
               {{this.info.msg}} !</h5>
-            <a href="/payform" class="ml-5 btn btn-success">Pay</a>
-          {{/if}}
           </div>
+          <br>
+          {{/if}}
         {{/each}}
       {{else}}
         <h1>No Notifications Available</h1>
       {{/if}}
      
-    </div>
+   
   </div>
 </div>
 
@@ -32,7 +34,13 @@
         position: relative;
         color: white;
     }
-
+    .message-box-no {
+        width: 800px;
+        padding: 20px;
+        border-radius: 10px;
+        position: relative;
+        color: white;
+    }
     .message-box::before {
         content: '';
         position: absolute;
@@ -41,6 +49,19 @@
         border-width: 0 10px 10px 0;
         border-style: solid;
         border-color: red white;
+        background: transparent;
+        width: 20px;
+        height: 20px;
+        transform: rotate(135deg);
+    }
+     .message-box-no::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: 10px;
+        border-width: 0 10px 10px 0;
+        border-style: solid;
+        border-color: green white;
         background: transparent;
         width: 20px;
         height: 20px;
