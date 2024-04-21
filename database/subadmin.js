@@ -220,7 +220,8 @@ module.exports = {
           },
         ])
         .toArray();
-      resolve(wrk);
+       // console.log(wrk);
+        resolve(wrk);
     });
   },
   Reverse_the_current_active_Workers: (id) => {
@@ -244,6 +245,7 @@ module.exports = {
           },
         ])
         .toArray();
+        console.log("First");
       resolve(info);
     });
   },
@@ -485,4 +487,50 @@ module.exports = {
         });
     });
   },
+  Get_Time_state_expire_Or_not : (id) =>
+  {
+      return new promise((resolve,reject)=>
+      {
+          db.get().collection(consts.userContractdb).findOne({_id:objectId(id)}).then((obj)=>
+          {
+            
+             resolve(obj.time)
+          })
+      })
+  },
+  Change_state_of_time_object : (id)=>
+  {
+    return new promise((resolve,reject)=>
+    {
+      db.get().collection(consts.userContractdb).updateOne({_id:objectId(id)},
+    {
+      $set:
+      {
+        time1 : false,
+        time2: true
+      }
+    }).then((res)=>
+    {
+      console.log("Second");
+      resolve(res)
+    })
+    })
+  },
+  Change_Time_status_For_Both_Time_End_andTimeRunning : (id)=>
+  {
+    return new promise((resolve,reject)=>
+    {
+        db.get().collection(consts.userContractdb).updateOne({_id:objectId(id)},
+        {
+          $set:
+          {
+            time2 : false,
+            time1 : true
+          }
+        }).then((res)=>
+        {
+          resolve(res)
+        })
+    })
+  }
 };

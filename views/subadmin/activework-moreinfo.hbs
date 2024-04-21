@@ -87,7 +87,7 @@
   endDate.setHours(endHours, endMinutes, 0, 0);
 
   // Check if redirection has already occurred today
-  let redirectionOccurred = localStorage.getItem('redirectionOccurred') === 'true';
+ 
 
   // Update the timer every second
   const timerInterval = setInterval(updateTimer, 1000);
@@ -108,16 +108,25 @@
         hours
       )}:${formatTime(minutes)}:${formatTime(seconds)}`;
       
+      if({{rev.wkinfo.time2}} == true)
+       {
+
+        window.location.href = `http://localhost:3000/subadmin/changetimestate?id={{rev.wkinfo._id}}`;
+       }
+
+      
     } else {
       // Stop the timer if it's outside the specified date range
       clearInterval(timerInterval);
       document.getElementById("timer").textContent = "Todays Work Completed";
 
       // Redirect to another webpage if redirection has not already occurred today
-      if (!redirectionOccurred) {
-        localStorage.setItem('redirectionOccurred', 'true'); // Set the flag indicating redirection has occurred
-        window.location.href = `http://localhost:3000/subadmin/reversewrker?id={{rev._id}}`;
-      }
+        
+       if({{rev.wkinfo.time1}} == true)
+       {
+        window.location.href = `http://localhost:3000/subadmin/reversewrker?id={{rev._id}}&timeid={{rev.wkinfo._id}}`;
+       }
+     
 
       // Clear the interval to prevent further calls to updateTimer
       clearInterval(timerInterval);
@@ -128,4 +137,5 @@
     return time < 10 ? `0${time}` : time;
   }
 </script>
+
 

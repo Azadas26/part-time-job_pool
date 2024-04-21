@@ -100,10 +100,19 @@ router.get("/recruitment",(req,res)=>
 router.get('/reversewrker',(req,res)=>
 {
         console.log(req.query.id);
-        subadmindb. Reverse_the_current_active_Workers(req.query.id).then((resc)=>
+        subadmindb.Get_Time_state_expire_Or_not(req.query.timeid).then((time)=>
         {
-            res.redirect('/subadmin/activewrkers')
+            console.log(time);
+           subadmindb. Reverse_the_current_active_Workers(req.query.id).then((resc)=>
+          {
+            subadmindb.Change_state_of_time_object(req.query.timeid).then((info)=>
+            {
+                res.redirect('/subadmin/activewrkers')
+            })
+           
+          })
         })
+        
 })
 router.get('/activeworks',(req,res)=>
 {
@@ -125,6 +134,7 @@ router.get("/activewrkers",(req,res)=>
         var today = new Date()
         date.date_Between_StartAnd_End(wrk[0].wkinfo.sdate,wrk[0].wkinfo.edate,today.toISOString().split('T')[0]).then((contractdate)=>
         {
+            console.log();
             res.render('./subadmin/activework-moreinfo',{suba:true,user:req.session.subadmin,wrk,rev:wrk[0],datebetween:contractdate})
         }).catch((contractdate)=>
         {
@@ -153,5 +163,14 @@ router.get("/reqpay",(req,res)=>
       })
    })
 })
+router.get("/changetimestate",(req,res)=>
+   {
+       subadmindb.Change_Time_status_For_Both_Time_End_andTimeRunning(req.query.id).then((resc)=>
+       {
+        
+        res.redirect('/subadmin/activewrkers')
+       })
+   })
+
 
 module.exports = router;

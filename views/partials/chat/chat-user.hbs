@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Popup</title>
+    <!-- Include Material Icons library for icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* Styles for the chat button */
+        .chat-button {
+            position: fixed;
+            bottom: 25px;
+            right: 20px;
+            z-index: 1000; /* Higher z-index to ensure it's above other content */
+            background-color: #151a1f; /* Change color as needed */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 75px;
+            height: 75px;
+            font-size: 36px; /* Increased font size for larger icon */
+            cursor: pointer;
+            box-shadow: rgb(192, 185, 185) 0px 20px 30px -10px;
+            animation: bounce 1s infinite; /* Add bounce animation */
+        }
+
+      
+
+        /* Chat button icon when clicked */
+        .chat-button.clicked {
+            background-color: #007bff; /* Change color when clicked */
+        }
+
+        /* Chat button icon when clicked */
+        .chat-button.clicked i.material-icons::before {
+            content: "message"; /* Change icon to message symbol when clicked */
+        }
+
+        /* Styles for the chat popup */
+        .chat-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1001; /* Higher z-index than overlay */
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 500px;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Close button style */
+        .close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Styles for chat messages */
+        .chat-messages {
+            max-height: 200px; /* Adjust as needed */
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+        }
+
+        /* Styles for the input box */
+        .chat-input {
+            width: calc(100% - 40px);
+            padding: 5px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        /* Styles for the submit button */
+        .submit-button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Overlay styles */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+            backdrop-filter: blur(5px); /* Blur effect */
+            z-index: 1000; /* Same as chat button */
+            display: none; /* Initially hidden */
+        }
+
+        /* Styles for user messages */
+        .user-message {
+            text-align: right; /* Align user messages to the right */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Chat button -->
+<button class="chat-button p-1 m-2" onclick="toggleChatPopup()"><i class="material-icons">forum</i></button>
+
+<!-- Chat popup -->
+<div id="chatPopup" class="chat-popup" style="border-radius: 20px;">
+    <span class="close" onclick="closeChatPopup()">&times;</span>
+    <h2><b><i>Chat</i></b></h2>
+    <div id="chatMessages" class="chat-messages">
+        <!-- Example chat messages -->
+        <div class="chat-message">Hello, how can I help you?</div>
+    </div>
+    <form id="chatForm" onsubmit="sendMessage(); return false;">
+        <input
+            type="text"
+            id="chatInput"
+            class="chat-input"
+            placeholder="Type your message..."
+            style="width: 100%;"
+        />
+        <button type="submit" class="submit-button">Send</button>
+    </form>
+</div>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay" onclick="closeChatPopup()"></div>
+
+<script>
+    function toggleChatPopup() {
+        var popup = document.getElementById("chatPopup");
+        var overlay = document.getElementById("overlay");
+        var button = document.querySelector(".chat-button");
+
+        if (popup.style.display === "block") {
+            popup.style.display = "none";
+            overlay.style.display = "none";
+            button.classList.remove("clicked");
+        } else {
+            popup.style.display = "block";
+            overlay.style.display = "block";
+            button.classList.add("clicked");
+        }
+    }
+
+    function closeChatPopup() {
+        var popup = document.getElementById("chatPopup");
+        var overlay = document.getElementById("overlay");
+        var button = document.querySelector(".chat-button");
+
+        popup.style.display = "none";
+        overlay.style.display = "none";
+        button.classList.remove("clicked");
+    }
+
+    function sendMessage() {
+        var message = document.getElementById("chatInput").value.trim();
+        if (message !== "") {
+            var chatMessages = document.getElementById("chatMessages");
+            var newMessage = document.createElement("div");
+            newMessage.classList.add("chat-message");
+            newMessage.classList.add("user-message");
+            newMessage.textContent = message;
+            chatMessages.appendChild(newMessage);
+            document.getElementById("chatInput").value = "";
+        }
+    }
+</script>
+
+{{#if user}}
+  <style>
+     @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-30px);
+            }
+        }
+</style>
+{{/if}}
+
+</body>
+</html>
