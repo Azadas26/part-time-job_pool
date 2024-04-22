@@ -171,6 +171,22 @@ router.get("/changetimestate",(req,res)=>
         res.redirect('/subadmin/activewrkers')
        })
    })
-
+router.get('/workalert',(req,res)=>
+{
+    subadmindb.Preveous_day_Work_alert_To_Workers(req.query.uid,req.query.wkid).then((info)=>
+    {
+        subadmindb.Set_Workers_messagedORnot_Object_Tofalse(req.query.wkid).then((resc)=>{
+        var no_day = info[0].workerinfo.empno
+        for(i=0;i<no_day;i++)
+        {
+            subadmindb. Work_alert_message_To_Worker(info[i].workers.workerid,info[i].wkid,info[i].workerinfo.stime,info[i].workerinfo.entim).then((resc)=>
+            {
+                res.redirect('/subadmin/activewrkers')
+            })
+        }
+        })
+        
+    })
+})
 
 module.exports = router;

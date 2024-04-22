@@ -125,6 +125,12 @@
        if({{rev.wkinfo.time1}} == true)
        {
         window.location.href = `http://localhost:3000/subadmin/reversewrker?id={{rev._id}}&timeid={{rev.wkinfo._id}}`;
+       
+       }
+        if({{rev.wkinfo.replywk}} == true)
+       {
+       
+        window.location.href = `http://localhost:3000/subadmin/workalert?uid={{rev.userinfo._id}}&wkid={{rev.wkinfo._id}}`;
        }
      
 
@@ -139,3 +145,4 @@
 </script>
 
 
+<h1>{{rev.wkinfo._id}}'''''''{{rev.userinfo._id}}</h1>

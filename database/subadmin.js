@@ -525,12 +525,95 @@ module.exports = {
           $set:
           {
             time2 : false,
-            time1 : true
+            time1 : true,
+            replywk : true
           }
         }).then((res)=>
         {
           resolve(res)
         })
+    })
+  },
+  Preveous_day_Work_alert_To_Workers :(userid,wrkid)=>
+  {
+    return new promise(async(resolve,reject)=>
+    {
+      var info =await db.get().collection(consts.assignjob).aggregate([
+        {
+          $match:
+          {
+            userid:objectId(userid),
+            wkid:objectId(wrkid)
+          }
+        },
+        {
+          $unwind : "$workers"
+        },
+        {
+          $project:
+          {
+             userid:1,
+             wkid:1,
+             workers:1,
+             date:"$workers.preferredDates"
+          }
+        },
+        {
+          $lookup: {
+            from: consts.userContractdb,
+            localField: "wkid",
+            foreignField: "_id",
+            as: "workerinfo",
+          }
+        },
+        {
+          $project: {
+            userid:1,
+            wkid:1,
+            workers:1,
+            date:1,
+            workerinfo: {
+              $arrayElemAt: ["$workerinfo", 0],
+            },
+          },
+        },
+      ]).toArray()
+      //console.log(info);
+      resolve(info);
+    })
+  },
+  Work_alert_message_To_Worker : (userid,wkid,sdate,edate)=>
+  {
+    return new promise((resolve,reject)=>
+    {
+      
+      var state =
+      {
+         userid : objectId(userid),
+         wkid:objectId(wkid),
+         notview : true,
+         msg : "Your Work is in tomorrow at "+sdate+" to "+edate
+      }
+       db.get().collection(consts.wrknotify).insertOne(state).then((info)=>
+       {
+            resolve(info)
+       })
+    })
+  },
+  Set_Workers_messagedORnot_Object_Tofalse : (id)=>
+  {
+    return new promise((resolve,reject)=>
+    {
+       db.get().collection(consts.userContractdb).updateOne({_id:objectId(id)},
+       {
+          $set:
+          {
+            replywk : false
+          }
+       }).then((resc)=>
+       {
+          resolve(resc)
+       })
     })
   }
 };

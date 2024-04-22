@@ -190,5 +190,79 @@ module.exports=
 
             })
         })
+    },
+    Get_state_off_first_message_to_worker: (userid,wkid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.userContractdb).findOne({userid:objectId(userid),_id:objectId(wkid)}).then((info)=>
+            {
+                resolve(info.firstwrkmsg)
+            })
+        })
+    },
+    Update_state_off_first_message_to_worker : (userid,wkid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.userContractdb).updateOne({userid:objectId(userid),_id:objectId(wkid)},
+            {
+                $set:
+                {
+                    firstwrkmsg : false
+                }
+            }).then((resc)=>
+            {
+                resolve(resc)
+            })
+        })
+    },
+    GetWorKers_FOR_first_Message_To_first_no_OF_workers : (userid,wrkid)=>
+    {
+        return new promise(async(resolve,reject)=>
+    {
+      var info =await db.get().collection(consts.assignjob).aggregate([
+        {
+          $match:
+          {
+            userid:objectId(userid),
+            wkid:objectId(wrkid)
+          }
+        },
+        {
+          $unwind : "$workers"
+        },
+        {
+          $project:
+          {
+             userid:1,
+             wkid:1,
+             workers:1,
+             date:"$workers.preferredDates"
+          }
+        },
+        {
+          $lookup: {
+            from: consts.userContractdb,
+            localField: "wkid",
+            foreignField: "_id",
+            as: "workerinfo",
+          }
+        },
+        {
+          $project: {
+            userid:1,
+            wkid:1,
+            workers:1,
+            date:1,
+            workerinfo: {
+              $arrayElemAt: ["$workerinfo", 0],
+            },
+          },
+        },
+      ]).toArray()
+      //console.log(info);
+      resolve(info);
+    })
     }
 }

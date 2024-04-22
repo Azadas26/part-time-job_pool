@@ -159,5 +159,21 @@ module.exports=
                 resolve()
             })
         })
+    },
+    Enable_Temp_payment_objecct : (userid,wkid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+           db.get().collection(consts.userContractdb).updateOne({userid:objecTId(userid),_id:objecTId(wkid)},
+           {
+                $set:
+                {
+                    pay : true
+                }
+           }).then((resc)=>
+           {
+                resolve(resc)
+           })
+        })
     }
 }

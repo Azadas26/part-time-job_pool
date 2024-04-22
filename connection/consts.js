@@ -10,6 +10,7 @@ module.exports =
    hireetmp : "HireeTemp",
    subadmin : "SubAdmin",
    assignjob:"AssignJobDb",
-   messagedb:"MessadeDB"
+   messagedb:"MessadeDB",
+   wrknotify : "Wk_notify"
 
 }

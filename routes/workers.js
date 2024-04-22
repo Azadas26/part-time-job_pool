@@ -2,7 +2,8 @@ var express = require("express");
 var router = express.Router();
 var wrkbase = require("../database/workersdb");
 const twilio = require("twilio");
-var otp = require('../connection/otp')
+var otp = require('../connection/otp');
+var subadmindb = require('../database/subadmin')
 
 /* GET home page. */
 var wkverifyotp =
@@ -175,7 +176,31 @@ router.get("/applayjob",verifyworker,(req,res)=>
 
    wrkbase.View_available_Jobs().then((jobs)=>
    {
-      console.log(jobs);
+      //console.log("azaddd",jobs[0]);
+      if(jobs[0].isfull)
+      {
+         wrkbase.Get_state_off_first_message_to_worker(jobs[0].userid,jobs[0]._id).then((resc)=>
+         {
+            if(resc)
+            {
+               wrkbase.GetWorKers_FOR_first_Message_To_first_no_OF_workers(jobs[0].userid,jobs[0]._id).then((info)=>
+               {
+                var no_day = info[0].workerinfo.empno
+                console.log(info);
+                for(i=0;i<no_day;i++)
+                {
+                    subadmindb.Work_alert_message_To_Worker(info[i].workers.workerid,info[i].wkid,info[i].workerinfo.stime,info[i].workerinfo.entim).then((resc)=>
+                    {
+                        wrkbase.Update_state_off_first_message_to_worker(jobs[0].userid,jobs[0]._id).then((resc)=>
+                        {
+                          res.redirect('/applayjob')
+                        })
+                    })
+                }
+               })
+            }
+         })
+      }
       res.render('./workers/jobs-page',{wk: true,user:req.session.wrker,jobs})
    })
 })

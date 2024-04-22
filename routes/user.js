@@ -213,6 +213,8 @@ router.post("/reqcontract",verfyuserlogin,(req,res)=>
   req.body.isreqpay = false;
   req.body.time1 = true;
   req.body.time2 = false;
+  req.body.replywk = true;
+  req.body.firstwrkmsg = true;
    usebase.User_Contract_info_FOR_acceptecnce(req.body).then((info)=>
    {
         res.redirect('/reqcontract')
@@ -229,5 +231,13 @@ router.get('/notification',verfyuserlogin,(req,res)=>
       }) 
       
     })
+})
+router.get('/payform',verfyuserlogin,(req,res)=>
+{
+   
+   usebase.Enable_Temp_payment_objecct(req.session.user._id,req.query.wkid).then((resc)=>
+   {
+      res.redirect('/notification')
+   })
 })
 module.exports = router;
