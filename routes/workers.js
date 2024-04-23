@@ -27,7 +27,27 @@ var verifyworker = (req,res,next)=>
 router.get("/", function (req, res, next) {
   if( req.session.wrker)
   {
-    res.render("./workers/first-page", { wk: true,user:req.session.wrker});
+    wrkbase.Check_whether_a_new_notification_Appear_Or_not(req.session.wrker._id).then((info)=>
+    {
+      if(info)
+      {
+        if(info.notview)
+        {
+          res.render("./workers/first-page", { wk: true,user:req.session.wrker,notview:true});
+        }
+        else
+        {
+          res.render("./workers/first-page", { wk: true,user:req.session.wrker});
+        }
+        
+      }
+      else
+      {
+        console.log("hiiii");
+
+        res.render("./workers/first-page", { wk: true,user:req.session.wrker});
+      }
+    })
   }
   else
   {
@@ -235,8 +255,17 @@ router.post("/applayjob",verifyworker,(req,res)=>
            }
         })
       })
+    })  
+})
+router.get('/notification',verifyworker,(req,res)=>
+{
+   wrkbase.If_worker_view_WrkMessage_change_object(req.session.wrker._id).then(()=>
+   {
+    wrkbase.view_Work_notification_Befor_work_starting_to_each_selected_workers(req.session.wrker._id).then((info)=>
+    {
+        res.render('./workers/work-notification',{wk: true,user:req.session.wrker,info})
     })
-    
+   })
 })
 
 module.exports = router;

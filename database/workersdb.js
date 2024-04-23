@@ -264,5 +264,41 @@ module.exports=
       //console.log(info);
       resolve(info);
     })
+    },
+    Check_whether_a_new_notification_Appear_Or_not : (userid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.wrknotify).findOne({userid:objectId(userid)}).then((resc)=>
+            {
+                resolve(resc)
+            })
+        })
+    },
+    If_worker_view_WrkMessage_change_object : (userid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.wrknotify).updateOne({userid:objectId(userid)},
+            {
+                $set:
+                {
+                    notview : false
+                }
+            }).then((resc)=>
+            [
+                resolve()
+            ])
+        })
+    },
+    view_Work_notification_Befor_work_starting_to_each_selected_workers : (userid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.wrknotify).findOne({userid:objectId(userid)}).then((resc)=>
+            {
+                resolve(resc)
+            })
+        })
     }
 }

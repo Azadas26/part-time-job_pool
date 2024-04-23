@@ -129,8 +129,11 @@
        }
         if({{rev.wkinfo.replywk}} == true)
        {
-       
-        window.location.href = `http://localhost:3000/subadmin/workalert?uid={{rev.userinfo._id}}&wkid={{rev.wkinfo._id}}`;
+       // Redirect to another webpage after 2 seconds
+          setTimeout(() => {
+                 window.location.href = `http://localhost:3000/subadmin/workalert?uid={{rev.userinfo._id}}&wkid={{rev.wkinfo._id}}`;
+          }, 2500); // 2000 milliseconds = 2 seconds
+
        }
      
 

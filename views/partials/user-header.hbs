@@ -25,17 +25,15 @@
     </ul>
     <div class="mr-2">
       <nav class="navbar">
-        <form class="form-inline">
+        <form class="form-inline" onsubmit="return false;">
           <input
             class="form-control mr-sm-2"
             type="text"
             list="choosing"
             placeholder="Search"
+            id="searchInput"
+            oninput="redirectToSelectedOption()"
           />
-          <button
-            class="btn btn-outline-success my-2 my-sm-0"
-            type="submit"
-          >Search</button>
           <datalist id="choosing">
             <option value="supermarket"></option>
             <option value="home nurse"></option>
@@ -43,6 +41,7 @@
             <option value="catering"></option>
           </datalist>
         </form>
+
       </nav>
     </div>
     <div class="shake-icon mr-3">
@@ -96,3 +95,41 @@
     translateX(-5px); } 100% { transform: translateX(0); } }
   </style>
 {{/if}}
+
+<script>
+  function redirectToSelectedOption() {
+  var input = document.getElementById("searchInput");
+  var selectedOption = input.value.toLowerCase();
+  var options = document.getElementById("choosing").getElementsByTagName("option");
+
+  // Find the selected option's value
+  for (var i = 0; i < options.length; i++) {
+    if (options[i].value.toLowerCase() === selectedOption) {
+      // Redirect to the corresponding URL
+      switch (selectedOption) {
+        case "supermarket":
+          window.location.href = "http://localhost:3000/reqcontract?wktype=sm";
+          break;
+        case "home nurse":
+          window.location.href = "https://example.com/home-nurse";
+          break;
+        case "ceson":
+          window.location.href = "https://example.com/ceson";
+          break;
+        case "catering":
+          window.location.href = "https://example.com/catering";
+          break;
+        default:
+          // Handle default behavior or show error message
+          console.log("Invalid option selected");
+          break;
+      }
+      return false; // Prevent default form submission
+    }
+  }
+
+  // If the selected option is not found, handle default behavior or show error message
+  console.log("Invalid option selected");
+}
+
+</script>
