@@ -93,7 +93,7 @@ module.exports=
                 var wrk =
                 {
                     workerid : objectId(workerid),
-                    preferredDates: dates && Array.isArray(dates) ? dates.map(date => new Date(date)) : null
+                    preferredDates: dates && Array.isArray(dates) ? dates.map(date => date) : null
                 }
                 if(res)
                 {
@@ -155,7 +155,8 @@ module.exports=
                   console.log("Array Length",wrkinfo);
                   if(wrkinfo)
                   {
-                    if(maxemp > (wrkinfo.workers.length+1))
+                    console.log("Aza Here",wrkinfo.workers.length+1);
+                    if(maxemp >= (wrkinfo.workers.length+1))
                     {
                          resolve(false)
                          resolve(false)
@@ -298,6 +299,80 @@ module.exports=
             db.get().collection(consts.wrknotify).findOne({userid:objectId(userid)}).then((resc)=>
             {
                 resolve(resc)
+            })
+        })
+    },
+    Check_whether_The_No_of_worker_already_full_in_a_referd_date_or_not : (date,number)=>
+    {
+        return new promise(async(resolve,reject)=>
+        {
+           var objs =
+           {
+             state : [],
+             isfull : false
+           }
+           console.log(date);
+           if(date != null)
+           {
+            for(i=0;i<date.length;i++)
+            {
+             var datess = await db.get().collection(consts.assignjob).aggregate([
+                  {
+                    $match: {
+                      "workers.preferredDates": date[i]
+                    }
+                  }
+                ]).toArray()
+                if(datess[0])
+                {
+                  var get_workarray = datess[0].workers
+                  //console.log(get_workarray);
+                  function countWorkersWithPreferredDate(date) {
+                    let count = 0;
+                    get_workarray.forEach(worker => {
+                        if (worker.preferredDates && worker.preferredDates.includes(date)) {
+                            count++;
+                        }
+                    });
+                    return count;
+                }
+                
+                // Call the function with the date "2024-04-25"
+                const numberOfWorkersWithDate = countWorkersWithPreferredDate(date[i]);
+                if(numberOfWorkersWithDate >= number)
+                {
+                    objs.state.push(`in this date ${date[i]} contain ${numberOfWorkersWithDate} Workers so The maximum number(${number}) reached Select another date`);
+                    objs.isfull = true
+                 }
+                else
+                {
+                   //state.push(`in ${date[i]} contain ${numberOfWorkersWithDate} Workers Limit is not reached (maximum limit ${number})`);
+                }
+                
+              }
+              else
+              {
+                
+                //state.push(`${date[i]} is Fully free sloat `);
+              }
+            }
+           }
+           else
+           {
+
+           }
+           
+           console.log(objs);
+           resolve(objs);
+        })
+    },
+    Get_No_of_emplee_User_Want_For_compairing_with_noOf_worker_dayBy_Day : (userid,wkid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.userContractdb).findOne({userid:objectId(userid),_id:objectId(wkid)}).then((resc)=>
+            {
+                resolve(resc.empno)
             })
         })
     }
