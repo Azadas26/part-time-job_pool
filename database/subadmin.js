@@ -158,12 +158,20 @@ module.exports = {
         });
     });
   },
-  Get_WorkS_and_Today_Worker_Details: () => {
+  Get_WorkS_and_Today_Worker_Details: (userid,wkid) => {
+    console.log(userid,wkid);
     return new promise(async (resolve, reject) => {
       var wrk = await db
         .get()
         .collection(consts.assignjob)
         .aggregate([
+          {
+            $match:
+            {
+                userid : objectId(userid),
+                wkid:objectId(wkid)
+            }
+          },
           {
             $unwind: "$workers",
           },
@@ -220,35 +228,59 @@ module.exports = {
           },
         ])
         .toArray();
-       // console.log(wrk);
+        console.log(wrk);
         resolve(wrk);
     });
   },
-  Reverse_the_current_active_Workers: (id) => {
+  Reverse_the_current_active_Workers: (id,count) => {
     return new promise(async (resolve, reject) => {
-      var info = await db
-        .get()
-        .collection(consts.assignjob)
-        .aggregate([
-          {
-            $match: {
-              _id: objectId(id),
-            },
-          },
-          {
-            $set: {
-              workers: { $reverseArray: "$workers" },
-            },
-          },
-          {
-            $out: consts.assignjob,
-          },
-        ])
-        .toArray();
-        console.log("First");
-      resolve(info);
+      console.log("azaddd count",count);
+      // var info = await db
+      //   .get()
+      //   .collection(consts.assignjob)
+      //   .aggregate([
+      //     {
+      //       $match: {
+      //         _id: objectId(id),
+      //       },
+      //     },
+      //     {
+      //       $set: {
+      //         workers: { $reverseArray: "$workers" },
+      //       },
+      //     },
+      //     {
+      //       $out: consts.assignjob,
+      //     },
+      //   ])
+      //   .toArray();
+      //   console.log("First");
+      // resolve(info);
+      const info = await db.get().collection(consts.assignjob).findOne({_id: objectId(id) });
+
+       // Extract the first two elements
+       const firstTwoWorkers = info.workers.slice(0,count);
+
+      // Extract the remaining elements starting from index 2 
+      const remainingWorkers = info.workers.slice(count);
+
+     // Concatenate the remaining elements with the extracted first two elements
+     const shiftedWorkers = remainingWorkers.concat(firstTwoWorkers);
+
+    // Update the document in the collection
+   await db.get().collection(consts.assignjob).updateOne({_id: objectId(id) }, 
+    {
+       $set: {
+         workers: shiftedWorkers 
+        }
+       }
+  ).then((resc)=>
+  {
+      resolve(resc)
+  })
+
     });
-  },
+},
   View_Current_Running_Works_and_user: () => {
     return new promise(async (resolve, reject) => {
       var wrk = await db
@@ -453,7 +485,7 @@ module.exports = {
         .findOne({ _id: objectId(wkid), userid: objectId(userid) })
         .then(async (info) => {
           var infos = {
-            msg: "Your Contract Request Accepted Waiting For Payment Request And Final Ckeck <br><h3>Have A Good Day </h3>",
+            msg: "Your Contract Request Accepted Waiting For Payment Request And Final Ckeck Have A Good Day ",
           };
           if (info) {
             await db
@@ -494,7 +526,7 @@ module.exports = {
           db.get().collection(consts.userContractdb).findOne({_id:objectId(id)}).then((obj)=>
           {
             
-             resolve(obj.time)
+             resolve(obj)
           })
       })
   },

@@ -164,104 +164,101 @@ router.post("/otp", (req, res) => {
     res.redirect("/worker/otp");
   }
 });
-router.get("/applayjob", verifyworker, (req, res) => {
-  wrkbase.View_available_Jobs().then((jobs) => {
-    //console.log("azaddd",jobs[0]);
-    if (jobs[0].isfull) {
-      wrkbase
-        .Get_state_off_first_message_to_worker(jobs[0].userid, jobs[0]._id)
-        .then((resc) => {
-          if (resc) {
-            wrkbase
-              .GetWorKers_FOR_first_Message_To_first_no_OF_workers(
-                jobs[0].userid,
-                jobs[0]._id
-              )
-              .then((info) => {
-                var no_day = info[0].workerinfo.empno;
-                console.log(info);
-                for (i = 0; i < no_day; i++) {
-                  subadmindb
-                    .Work_alert_message_To_Worker(
-                      info[i].workers.workerid,
-                      info[i].wkid,
-                      info[i].workerinfo.stime,
-                      info[i].workerinfo.entim
-                    )
-                    .then((resc) => {
-                      wrkbase
-                        .Update_state_off_first_message_to_worker(
-                          jobs[0].userid,
-                          jobs[0]._id
-                        )
-                        .then((resc) => {
-                          res.redirect("/applayjob");
-                        });
-                    });
-                }
-              });
-          }
-        });
-    }
-    res.render("./workers/jobs-page", {
-      wk: true,
-      user: req.session.wrker,
-      jobs,
+router.get("/applayjob", verifyworker, (req, res) => 
+{
+    wrkbase.View_available_Jobs().then((jobs) => 
+    {
+      res.render("./workers/jobs-page", {wk: true,user: req.session.wrker,jobs,});
     });
   });
-});
-router.post("/applayjob", verifyworker, (req, res) => {
+router.post("/applayjob", verifyworker, async(req, res) => {
   var dateArray = null;
-  //console.log("Date",req.body);
-  if (req.body.date == "no") 
+  console.log("Date",req.body);
+  if (req.body.date == 'no') 
   {
+    console.log("NOO check");
     dateArray = null;
   }
    else
   {
     const preferredDates = req.body.preferredDates;
-    console.log(preferredDates);
+    //console.log(preferredDates);
     dateArray = preferredDates.split(", ").map((date) => date);
-    console.log(dateArray);
+    //console.log(dateArray);
   }
   //console.log(dateArray);
+  console.log(req.query.userid,req.query.wkid);
   
-    wrkbase.Get_No_of_emplee_User_Want_For_compairing_with_noOf_worker_dayBy_Day(req.query.userid,req.query.wkid).then(async(number)=>
+    await wrkbase.Get_No_of_emplee_User_Want_For_compairing_with_noOf_worker_dayBy_Day(req.query.userid,req.query.wkid).then(async(obj)=>
     {
        //var date = req.body.date;
        //var datrarray=date.split(',');
-      await wrkbase.Check_whether_The_No_of_worker_already_full_in_a_referd_date_or_not(dateArray,number).then((objs)=>
+       //console.log(obj.empno);
+      await wrkbase.Check_whether_The_No_of_worker_already_full_in_a_referd_date_or_not(dateArray,obj.empno,req.query.userid,req.query.wkid).then((objs)=>
        {
-        console.log(objs.isfull);
+        //console.log(objs.isfull);
+
        if(objs.isfull)
        {
         wrkbase.View_available_Jobs().then((jobs) => 
         {
          
-          console.log(objs.state);
-          console.log("Azad first");
+         // console.log(objs.state);
+         // console.log("Azad first");
           res.render("./workers/jobs-page", {wk: true,user: req.session.wrker,state:objs.state,jobs});
         });
        }
        else
        {
-        console.log("Azade secon");
+        //console.log("Azade secon");
         wrkbase.Evaluvate_The_Worker_Count_CompairWithDate_andCount(req.query.userid,req.query.wkid).then((fill) => 
          {
           wrkbase.Assign_Worker_to_Their_Redy_To_join(req.query.wkid,req.query.userid,req.session.wrker._id,dateArray).then((resc) => 
           {
-            wrkbase.View_available_Jobs().then((jobs) => 
+            wrkbase.View_available_Jobs().then(async(jobs) => 
            {
             //   // console.log(jobs);
-            //   console.log("i fills", fill);
-            if (resc) 
+            //console.log("i fills", fill);
+            //console.log("obj..#####",obj);
+            await wrkbase.Get_lates_isfull_OBJECT_for_worker_message(req.query.userid,req.query.wkid).then((fullornot)=>
             {
-              res.render("./workers/jobs-page", {wk: true,user: req.session.wrker,jobs,fill, already: "Your Already In",});
-            } 
+            if(fullornot)
+            {
+              console.log("Ting ting");
+              wrkbase.Get_state_off_first_message_to_worker(req.query.userid,req.query.wkid).then(async(resc) => 
+              {
+                  if (resc) 
+                  {
+                   await  wrkbase.GetWorKers_FOR_first_Message_To_first_no_OF_workers(req.query.userid,req.query.wkid).then((info) => 
+                    {
+                        var no_day = info[0].workerinfo.empno;
+                        console.log(info);
+                        for (i = 0; i < no_day; i++) 
+                        {
+                          subadmindb.Work_alert_message_To_Worker(info[i].workers.workerid,info[i].wkid,info[i].workerinfo.stime,info[i].workerinfo.entim).then((resc) => 
+                          {
+                              wrkbase.Update_state_off_first_message_to_worker(obj.userid,obj._id).then((resc) => 
+                              {
+                                res.render("./workers/jobs-page", {wk: true,user: req.session.wrker,jobs,fill});
+                              });
+                          });
+                        }
+                    });
+                  }
+              });
+            }
             else
             {
-              res.render("./workers/jobs-page", {wk: true,user: req.session.wrker,jobs,fill,succ: "Requested Successfully Commited"});
+             if (resc) 
+             {
+               res.render("./workers/jobs-page", {wk: true,user: req.session.wrker,jobs,fill, already: "Your Already In",});
+             } 
+             else
+             {
+               res.render("./workers/jobs-page", {wk: true,user: req.session.wrker,jobs,fill,succ: "Requested Successfully Commited"});
+             }
             }
+          });
            });
           });
         })

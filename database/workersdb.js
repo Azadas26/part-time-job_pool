@@ -302,7 +302,7 @@ module.exports=
             })
         })
     },
-    Check_whether_The_No_of_worker_already_full_in_a_referd_date_or_not : (date,number)=>
+    Check_whether_The_No_of_worker_already_full_in_a_referd_date_or_not : (date,number,userid,wkid)=>
     {
         return new promise(async(resolve,reject)=>
         {
@@ -319,7 +319,10 @@ module.exports=
              var datess = await db.get().collection(consts.assignjob).aggregate([
                   {
                     $match: {
-                      "workers.preferredDates": date[i]
+                      "workers.preferredDates": date[i],
+                      userid : objectId(userid),
+                      wkid : objectId(wkid)
+
                     }
                   }
                 ]).toArray()
@@ -372,7 +375,17 @@ module.exports=
         {
             db.get().collection(consts.userContractdb).findOne({userid:objectId(userid),_id:objectId(wkid)}).then((resc)=>
             {
-                resolve(resc.empno)
+                resolve(resc)
+            })
+        })
+    },
+    Get_lates_isfull_OBJECT_for_worker_message : (userid,wrkid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.userContractdb).findOne({userid:objectId(userid),_id:objectId(wrkid)}).then((resc)=>
+            {
+                resolve(resc.isfull)
             })
         })
     }

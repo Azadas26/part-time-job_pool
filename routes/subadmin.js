@@ -100,14 +100,14 @@ router.get("/recruitment",(req,res)=>
 router.get('/reversewrker',(req,res)=>
 {
         console.log(req.query.id);
-        subadmindb.Get_Time_state_expire_Or_not(req.query.timeid).then((time)=>
+        subadmindb.Get_Time_state_expire_Or_not(req.query.timeid).then((obj)=>
         {
-            console.log(time);
-           subadmindb. Reverse_the_current_active_Workers(req.query.id).then((resc)=>
+            //console.log(time);
+           subadmindb. Reverse_the_current_active_Workers(req.query.id,obj.empno).then((resc)=>
           {
             subadmindb.Change_state_of_time_object(req.query.timeid).then((info)=>
             {
-                res.redirect('/subadmin/activewrkers')
+                res.redirect(`/subadmin/activewrkers?wkid=${req.query.timeid}&userid=${req.query.uid}`)
             })
            
           })
@@ -125,7 +125,7 @@ router.get('/activeworks',(req,res)=>
 router.get("/activewrkers",(req,res)=>
 {
     console.log(req.query);
-    subadmindb.Get_WorkS_and_Today_Worker_Details().then(async(wrks)=>
+    subadmindb.Get_WorkS_and_Today_Worker_Details(req.query.userid,req.query.wkid).then(async(wrks)=>
     {
          var date = require('../connection/date')
        
@@ -168,7 +168,8 @@ router.get("/changetimestate",(req,res)=>
        subadmindb.Change_Time_status_For_Both_Time_End_andTimeRunning(req.query.id).then((resc)=>
        {
         
-        res.redirect('/subadmin/activewrkers')
+        res.redirect(`/subadmin/activewrkers?wkid=${req.query.id}&userid=${req.query.uid}`)
+         
        })
    })
 router.get('/workalert',(req,res)=>
@@ -181,7 +182,7 @@ router.get('/workalert',(req,res)=>
         {
             subadmindb. Work_alert_message_To_Worker(info[i].workers.workerid,info[i].wkid,info[i].workerinfo.stime,info[i].workerinfo.entim).then((resc)=>
             {
-                res.redirect('/subadmin/activewrkers')
+                res.redirect(`/subadmin/activewrkers?wkid=${req.query.wkid}&userid=${req.query.uid}`)
             })
         }
         })
