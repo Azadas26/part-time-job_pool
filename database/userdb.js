@@ -235,5 +235,22 @@ module.exports=
             //console.log(info);
             resolve(info)
         })
+    },
+    Check_whether_The_Recrutment_process_Done_or_NOt : (userid,wktype)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.userContractdb).findOne({userid:objecTId(userid),wktype:wktype}).then((info)=>
+            {
+                if(info.isfull)
+                {
+                    resolve(true)
+                }
+                else
+                {
+                    resolve(false)
+                }
+            })
+        })
     }
 }

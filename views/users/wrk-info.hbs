@@ -1,20 +1,61 @@
 <div class="container-fluid">
-    <div class="row p-5">
+    <div class="row">
             {{#if state}}
+           <div class="col-md-12 text-center m-5" style="width: 100%;">
+             <h1 class="m-2 text-light"><b>{{wkinfo.sname}}</b></h1>
+              <h3 class="m-2 text-light"><b>No.of Employee You Wanted : {{wkinfo.empno}}</b></h3>
+               <h3 class="m-2 text-light"><b>Your Work Start From {{wkinfo.sdate}} To {{wkinfo.edate}}</b></h3>
+               <h3 class="m-2 text-light"><b>Time : {{wkinfo.stime}} To {{wkinfo.entim}}</b></h3>
+               <h1 class="mt-5 text-light"><b><i>YOUR WORKERS</i></b></h1>
+           </div>
             {{#each state}}
-        <div class="col-md-4 m-5">
-             <div class="card m-auto" style="width: 18rem;">
-                <img class="card-img-top" src="..." alt="Card image cap">
+          <div class="col-md-4 mt-4">
+             <div class="card m-auto p-3 text-light text-center" style="width: 18rem;border-radius: 20px; background-color: #15181e;box-shadow: #C993e8 0px 20px 30px -10px;">
+                <img class="card-img-top" style="height: 200px;border-radius: 20px;" src="/wkaadhar/{{this.wkid}}.jpg" alt="Card image cap">
                     <div class="card-body">
-                     <h5 class="card-title">{{this.wkinfo.sname}}</h5>
-                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                 <a href="#" class="btn btn-primary">Go somewhere</a>
+                     <h5 class="card-title">Worker Name : {{this.name}}</h5>
+                         <p class="card-text">Mail Address : {{this.email}}</p>
+                         <p class="card-text">Phone Number : {{this.ph}}</p>
+                         <p class="card-text">Address : {{this.address}}{{this.district}}</p>       
                      </div>
                 </div>  
         </div>
               {{/each}}
+             <div class="text-center mt-5 p-5" style="width: 100%;">
+                 <small class="m-5 p-5 text-light" style="font-size: 20px;">Workers Are Temporory Every Day This Workers May or Maynot Be Change...</small>
+             </div>
             {{else}}
-                <h1>Nothing Found</h1>
+               <div class="container mt-5">
+                 <div class="p-5 text-center mt-5">
+                    <h1 class="circular-animation" style="border-radius: 50%; background-color: #ccc; padding: 20px;"><b>Nothing Found</b></h1>
+                     </div>
+                      </div>
+
             {{/if}}
     </div>
 </div>
+
+
+
+<style>
+  .circular-animation {
+    display: inline-block;
+    animation: rotate 5s linear infinite; /* Adjust duration and timing function as needed */
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Additional styles for the container */
+  .container {
+    width: 100%;
+    text-align: center;
+    padding: 5rem 0;
+  }
+</style>

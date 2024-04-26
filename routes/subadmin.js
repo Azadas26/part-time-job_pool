@@ -159,7 +159,11 @@ router.get("/reqpay",(req,res)=>
    {
       subadmindb. Blurr_Payment_request_After_admin_requesting(req.query.userid,req.query.wkid).then((resc)=>
       {
-          res.redirect('/subadmin/activeworks')
+         subadmindb.Enable_Notification_ICON_PaymenT_request_BY_sub_admiN(req.query.userid,req.query.wkid).then(()=>
+         {
+            res.redirect('/subadmin/activeworks')
+         })
+          
       })
    })
 })

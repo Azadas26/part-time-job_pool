@@ -647,5 +647,21 @@ module.exports = {
           resolve(resc)
        })
     })
+  },
+  Enable_Notification_ICON_PaymenT_request_BY_sub_admiN : (userid,wkid)=>
+  {
+    return new promise(async(resolve,reject)=>
+    {
+      await db.get().collection(consts.messagedb).updateOne({userid:objectId(userid),wkid:objectId(wkid)},
+       {
+        $set:
+        {
+          viewed : false
+        }
+       }).then((resc)=>
+       {
+          resolve()
+       })
+    })
   }
 };

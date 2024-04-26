@@ -1,15 +1,25 @@
 <div class="container-fluid m-3">
-  <div class="row p-5">
-    <div class="col-md-6 p-5">
-      <div class="card text-light" style="width: 100%;background-color: #15181e;;">
+  <div class="row">   
         {{#if reqexist}}
-          {{#if accepted}}
-             <h1>Your Contract Request is accepted by admin and jon requretment is going</h1>
-          {{else}}
-              <h1>Your are Already Requested Wait For our responce</h1>
+          {{#if isfull}}
+            <div class="col-md-12 d-flex align-items-center justify-content-center" style="width: 100%; height: 100vh;">
+                    <h1 class="text-light"><b>Recrutement process Done...</b></h1> 
+                   <a class="btn btn-outline-success m-3" href="/wrkinfo">Go To Workinfo</a>
+           </div>
           {{/if}}
-        {{else}}
-        
+          {{#if accepted}}
+             <div class="col-md-12 d-flex align-items-center justify-content-center" style="width: 100%; height: 100vh;">
+                    <h1 class="text-light"><b>Your Contract Request is accepted by admin and jon requirement is going...</b></h1>
+           </div>
+
+          {{else}}
+           <div class="col-md-12 d-flex align-items-center justify-content-center" style="width: 100%; height: 100vh;">
+                   <h1 class="text-light"><b>Your are Already Requested Wait For our responce...</b></h1>
+           </div>
+          {{/if}}
+          {{else}}
+         <div class="col-md-6 mt-5 p-5">
+          <div class="card text-light" style="width: 100%;background-color: #15181e;"> 
             <form class="p-5" action="/reqcontract?wktype=sm" method="post" enctype="multipart/form-data" id="usersignupform">
                 <h1 class="text-center" style="font-weight: 800;"><b>Enter Shop Details</b>
                 </h1>
@@ -99,18 +109,24 @@
                
                 <button type="submit" style="width: 100%; border-radius: 12px;" class="btn btn-dark mt-3">Submit</button>
             </form>
+             </div>
         {{/if}}
                
-      </div>
+     
     </div>
     {{!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ --}}
-    <div class="col-md-6  p-5">
+     {{#if reqexist}}
+
+     {{else}}
+        <div class="col-md-6  p-5">
       <div class="card text-light" style="width: 100%;background-color: #d73e17;;">
               
       </div>
     </div>
   </div>
 </div>
+     {{/if}}
+    
 
 
 

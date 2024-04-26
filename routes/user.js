@@ -111,7 +111,7 @@ router.get("/login", (req, res) => {
   {
     if(req.session.loginfail)
   {
-    res.render("./users/login-page", { userhd: true,errorlogin:"Invalid Username or Password"});
+    res.render("./users/login-page", { errorlogin:"Invalid Username or Password"});
     req.session.loginfail = false
   }
   else
@@ -184,14 +184,24 @@ router.get("/reqcontract",verfyuserlogin,(req,res)=>
         {
           usebase.Check_whether_The_admin_accepted_ThatRequest_OR_NoT(req.session.user._id,reqexist._id).then((accepted)=>
           {
-            if(accepted)
+            usebase.Check_whether_The_Recrutment_process_Done_or_NOt(req.session.user._id,req.query.wktype).then((isfull)=>
             {
-              res.render('./users/contract-page',{userhd:true,user:req.session.user,reqexist,accepted})
-            }
-            else
-          {
-            res.render('./users/contract-page',{userhd:true,user:req.session.user,reqexist})
-          } 
+               if(isfull)
+               {
+                res.render('./users/contract-page',{userhd:true,user:req.session.user,reqexist,isfull})
+               }
+               else
+               {
+                if(accepted)
+                {
+                  res.render('./users/contract-page',{userhd:true,user:req.session.user,reqexist,accepted})
+                }
+                else
+                {
+                res.render('./users/contract-page',{userhd:true,user:req.session.user,reqexist})
+                } 
+               }
+            })
           })
         }
         else
@@ -247,17 +257,21 @@ router.get('/wrkinfo',verfyuserlogin,(req,res)=>
       //console.log(info);
       //console.log(info[0].wkinfo.empno);
       var state = []
-      if(info)
+      var wkinfo = {}
+      if(info[0] )
       {
+           console.log("Hello",info)
            for(i=0;i<info[0].wkinfo.empno;i++)
            {
-               state.push(info[i])
+               state.push(info[i].workerinfo)
+               wkinfo = info[i].wkinfo
            }
            console.log(state);
-           res.render('./users/wrk-info',{userhd:true,user:req.session.user,state})
+           res.render('./users/wrk-info',{userhd:true,user:req.session.user,state,wkinfo})
       }
       else
       {
+       ;
         res.render('./users/wrk-info',{userhd:true,user:req.session.user})
       }
        
