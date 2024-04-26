@@ -175,5 +175,65 @@ module.exports=
                 resolve(resc)
            })
         })
+    },
+    Get_Worke_AND_Worker_Details : (userid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            var info = db.get().collection(consts.assignjob).aggregate([
+                {
+                    $match:
+                    {
+                        userid:objecTId(userid)
+                    }
+                },
+                {
+                    
+                        $unwind:"$workers"
+                    
+                },
+                {
+                    $lookup: {
+                      from: consts.userContractdb,
+                      localField: "wkid",
+                      foreignField: "_id",
+                      as: "wkinfo",
+                    },
+                  },
+                  {
+                    $project: {
+                      userid: 1,
+                      workers: 1,
+                      workerid:"$workers.workerid",
+                      wkinfo: {
+                        $arrayElemAt: ["$wkinfo", 0],
+                      },
+                    },
+                  },
+                  {
+                    $lookup:
+                    {
+                        from:consts.workerbase,
+                        localField : "workerid",
+                        foreignField: "_id",
+                        as:"workerinfo"
+                    }
+                   },
+                   {
+                    $project: {
+                      userid: 1,
+                      workers: 1,
+                      wkinfo: 1,
+                      workerinfo:
+                      {
+                        $arrayElemAt: ["$workerinfo", 0],
+                      }
+
+                    },
+                  },
+            ]).toArray()
+            //console.log(info);
+            resolve(info)
+        })
     }
 }

@@ -240,4 +240,28 @@ router.get('/payform',verfyuserlogin,(req,res)=>
       res.redirect('/notification')
    })
 })
+router.get('/wrkinfo',verfyuserlogin,(req,res)=>
+{    
+    usebase.Get_Worke_AND_Worker_Details(req.session.user._id).then((info)=>
+    {
+      //console.log(info);
+      //console.log(info[0].wkinfo.empno);
+      var state = []
+      if(info)
+      {
+           for(i=0;i<info[0].wkinfo.empno;i++)
+           {
+               state.push(info[i])
+           }
+           console.log(state);
+           res.render('./users/wrk-info',{userhd:true,user:req.session.user,state})
+      }
+      else
+      {
+        res.render('./users/wrk-info',{userhd:true,user:req.session.user})
+      }
+       
+    })
+})
+
 module.exports = router;

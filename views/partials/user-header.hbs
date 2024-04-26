@@ -24,7 +24,7 @@
       </li>
     </ul>
     <div class="mr-2">
-      <nav class="navbar">
+      {{!-- <nav class="navbar">
         <form class="form-inline" onsubmit="return false;">
           <input
             class="form-control mr-sm-2"
@@ -42,7 +42,7 @@
           </datalist>
         </form>
 
-      </nav>
+      </nav> --}}
     </div>
     <div class="shake-icon mr-3">
       <a
@@ -78,6 +78,7 @@
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {{#if user}}
           <a class="dropdown-item" href="/logout">Logout</a>
+           <a class="dropdown-item" href="/wrkinfo">Work info</a>
         {{else}}
           <a class="dropdown-item" href="/login">Login</a>
           <a class="dropdown-item" href="/signup">Signup</a>
