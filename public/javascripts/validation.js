@@ -73,5 +73,16 @@ $(document).ready(() => {
         },
       },
     });
+    $("#payment").validate({
+      rules: {
+        name: {
+          required: true,
+          startsWithLetter: true, // Use the custom validation method
+        },
+        address: {
+          required: true,
+        }
+      },
+    });
   });
   

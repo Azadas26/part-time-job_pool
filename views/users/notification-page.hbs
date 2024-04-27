@@ -2,22 +2,36 @@
   <div class="row pl-5 pr-5 pt-5 m-3">
     <div class="col-md-12 mt-5 p-4">
       {{#if nots}}
-        {{#each nots}}
+             {{#each nots}}
           {{#if this.info.reqpay}}
            <div class="col-md-6  message-box" style="background-color: red;"> <!-- Added offset-md-6 to align to the right -->
             <h5 class="text-light ml-5">
               {{this.info.msg}} !</h5>
-            <a href="/payform?wkid={{this.wkid}}" class="ml-5 btn btn-success">Pay</a>
+              {{#if pay.payed}}
+                
+              {{else}}
+                   <a href="/payform?wkid={{this.wkid}}" class="ml-5 btn btn-success">Pay</a>
+              {{/if}}
+           
              </div>
-             <br>
+             <br> <br><br>
           {{else}}
             <div class="col-md-6 offset-md-6 message-box-no" style="background-color: green;"> <!-- Added offset-md-6 to align to the right -->
             <h5 class="text-light ml-5">
               {{this.info.msg}} !</h5>
           </div>
-          <br>
+          <br> <br><br>
           {{/if}}
         {{/each}}
+       
+        {{#if pay.payed}}
+        
+          <div class="col-md-6  message-box" style="background-color: rgb(36, 148, 32);"> <!-- Added offset-md-6 to align to the right -->
+            <h5 class="text-light ml-5">
+             Payment Proccess Successfuly Completed </h5>
+           
+             </div>
+             {{/if}}
       {{else}}
         <h1>No Notifications Available</h1>
       {{/if}}

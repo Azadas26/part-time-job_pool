@@ -3,6 +3,11 @@ var db = require('../connection/connect')
 var consts = require('../connection/consts') 
 var bcrypt = require('bcryptjs')
 var objecTId = require('mongodb').ObjectId
+var Razorpay = require('razorpay')
+var instance = new Razorpay({ 
+    key_id: 'rzp_test_NVSZaOyVAMHDJW',  
+    key_secret: '6A9u2YGlYT7tbBTdibTbL9bq',
+   });
 
 module.exports=
 {
@@ -160,17 +165,11 @@ module.exports=
             })
         })
     },
-    Enable_Temp_payment_objecct : (userid,wkid)=>
+    Get_information_For_Payment_Form : (userid,wkid)=>
     {
         return new promise((resolve,reject)=>
         {
-           db.get().collection(consts.userContractdb).updateOne({userid:objecTId(userid),_id:objecTId(wkid)},
-           {
-                $set:
-                {
-                    pay : true
-                }
-           }).then((resc)=>
+           db.get().collection(consts.userContractdb).findOne({userid:objecTId(userid),_id:objecTId(wkid)}).then((resc)=>
            {
                 resolve(resc)
            })
@@ -250,6 +249,88 @@ module.exports=
                 {
                     resolve(false)
                 }
+            })
+        })
+    },
+    Get_user_information_for_paymebt : (userid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.userbase).findOne({_id:objecTId(userid)}).then((userinfo)=>
+            {
+                resolve(userinfo)
+            })
+        })
+    },
+    generateRazorpay : (orderId,total)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            var options = {
+                amount: total*100,  // amount in the smallest currency unit
+                currency: "INR",
+                receipt: orderId
+              };
+              instance.orders.create(options, function(err, order) {
+               if(err)
+               {
+                console.log(err);
+               }
+               else
+               {
+                //console.log(order);
+                resolve(order);
+               }
+              });
+        })
+    },
+    verify_Payment : (details)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            const crypto = require("crypto");
+            const hmac = crypto.createHmac('sha256', '6A9u2YGlYT7tbBTdibTbL9bq');
+            hmac.update(details['payment[razorpay_order_id]'] + "|" + details['payment[razorpay_payment_id]']);
+            let generatedSignature = hmac.digest('hex');
+
+            if (generatedSignature == details['payment[razorpay_signature]']) {
+                console.log("Azad checked");
+                resolve()
+            }
+            else {
+                reject()
+            }
+        })
+    },
+    Change_state_of_pay_object_AFteR_Payment : (wkid,userid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+           db.get().collection(consts.userContractdb).updateOne({userid:objecTId(userid),_id:objecTId(wkid)},
+           {
+                $set:
+                {
+                    pay : true
+                }
+           }).then(()=>
+           {
+                resolve()
+           })
+        })
+    },
+    Change_state_of_payedobject_in_users_notify : (userid,wkid)=>
+    {
+        return new promise((resolve,reject)=>
+        {
+            db.get().collection(consts.messagedb).updateOne({userid:objecTId(userid),wkid:objecTId(wkid)},
+            {
+                $set:
+                {
+                    payed : true
+                }
+            }).then(()=>
+            {
+                resolve()
             })
         })
     }

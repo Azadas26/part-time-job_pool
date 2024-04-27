@@ -1,0 +1,27 @@
+<div class="container-fluid d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div class="row text-center">
+        <div class="col-md-12">
+            <h1 class="payment-success font-weight-bold" style="font-size: 80px;">Payment Success</h1>
+            <a class="btn btn-success" href="/">Go TO Home</a>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Styling for the payment success message */
+.payment-success {
+    text-align: center;
+    color: #28a745; /* Green color for success */
+    font-size: 3rem; /* Adjust font size as needed */
+    margin-top: 50px; /* Add some spacing from the top */
+    opacity: 0; /* Initially hidden */
+    animation: appear 1s ease-out forwards; /* Animation to make it appear */
+}
+
+/* Keyframes for appear animation */
+@keyframes appear {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+</style>

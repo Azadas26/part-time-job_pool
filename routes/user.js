@@ -5,6 +5,7 @@ const twilio = require("twilio");
 var otp = require('../connection/otp')
 var objectId = require('mongodb').ObjectId
 
+var total
 
 var verfyuserlogin = (req,res,next)=>
 {
@@ -237,17 +238,30 @@ router.get('/notification',verfyuserlogin,(req,res)=>
     {
       usebase.Turn_off_notification_whe_user_already_viwed(req.session.user._id).then(()=>
       {
-        res.render('./users/notification-page',{userhd:true,user:req.session.user,nots})
+        res.render('./users/notification-page',{userhd:true,user:req.session.user,nots,pay:nots[0]})
       }) 
       
     })
 })
 router.get('/payform',verfyuserlogin,(req,res)=>
 {
-   
-   usebase.Enable_Temp_payment_objecct(req.session.user._id,req.query.wkid).then((resc)=>
+    
+   usebase.Get_information_For_Payment_Form(req.session.user._id,req.query.wkid).then((info)=>
    {
-      res.redirect('/notification')
+      console.log(info);
+      usebase. Get_user_information_for_paymebt(req.session.user._id).then((userinfo)=>
+      {
+        console.log(userinfo);
+        const startDate = new Date(info.sdate);
+        const endDate = new Date(info.edate);
+        const differenceMs = endDate - startDate;
+  
+        const daysDifference = Math.floor(differenceMs / (1000 * 60 * 60 * 24)) + 1;
+        var total_amount = daysDifference * info.empno * info.salary
+        console.log(total_amount);
+         total = total_amount
+        res.render('./users/payment-form',{userhd:true,user:req.session.user,info,total:total_amount,userinfo})
+      })
    })
 })
 router.get('/wrkinfo',verfyuserlogin,(req,res)=>
@@ -266,7 +280,7 @@ router.get('/wrkinfo',verfyuserlogin,(req,res)=>
                state.push(info[i].workerinfo)
                wkinfo = info[i].wkinfo
            }
-           console.log(state);
+           //console.log(state);
            res.render('./users/wrk-info',{userhd:true,user:req.session.user,state,wkinfo})
       }
       else
@@ -276,6 +290,36 @@ router.get('/wrkinfo',verfyuserlogin,(req,res)=>
       }
        
     })
+})
+router.post('/payment',async(req,res)=>
+{
+
+      await usebase.generateRazorpay(req.body.wkid,total).then((response)=>
+      {
+         res.json(response)
+      })
+})
+router.post('/verfy-pay',(req,res)=>
+{
+    console.log("findWork ID",req.body);
+    usebase.verify_Payment(req.body).then(()=>
+    {
+       usebase.Change_state_of_pay_object_AFteR_Payment(req.body['order[receipt]'],req.session.user._id).then(()=>
+       {
+            usebase. Change_state_of_payedobject_in_users_notify(req.session.user._id,req.body['order[receipt]']).then(()=>
+            {
+              res.json({status:true})
+            })       
+       })
+
+    }).catch(()=>
+    {
+        res.json({status:'Payment Failed'})
+    })
+})
+router.get('/afterplaced',(req,res)=>
+{
+    res.render('./users/success-page',{userhd:true,user:req.session.user})
 })
 
 module.exports = router;

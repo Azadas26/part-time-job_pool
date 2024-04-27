@@ -506,6 +506,7 @@ module.exports = {
             var status = {
               userid: objectId(userid),
               wkid: objectId(wkid),
+              payed:false,
               viewed:false,
               info: [infos],
             };
