@@ -7,6 +7,7 @@
                <h3 class="m-2 text-light"><b>Your Work Start From {{wkinfo.sdate}} To {{wkinfo.edate}}</b></h3>
                <h3 class="m-2 text-light"><b>Time : {{wkinfo.stime}} To {{wkinfo.entim}}</b></h3>
                <h1 class="mt-5 text-light"><b><i>YOUR WORKERS</i></b></h1>
+               <div class="text-center text-light ml-5 pl-4" id="timer">00:00:00</div>
            </div>
             {{#each state}}
           <div class="col-md-4 mt-4">
@@ -59,3 +60,93 @@
     padding: 5rem 0;
   }
 </style>
+
+
+
+<div class="text-light">
+  
+  {{!-- ################################################################################################### --}}
+      
+       <style>
+    #timer {
+      font-size: 64px;
+      font-weight: bold;
+      width: 90vw; /* Set the width to 30% of the viewport width */
+      height: auto; /* Automatically adjust height based on content */
+    }
+  </style>
+   {{!-- ################################################################################################### --}}
+</div>
+        
+
+<script>
+  // Example time strings in "HH:mm" format
+  const startTimeString = "08:00";
+  const endTimeString = "12:00";
+  //console.log("{{rev.wkinfo.stime}}")
+  // Split the time strings into hours and minutes
+  const [startHoursString, startMinutesString] = startTimeString.split(":");
+  const [endHoursString, endMinutesString] = endTimeString.split(":");
+
+  // Convert hours and minutes to integers
+  const startHours = parseInt(startHoursString, 10);
+  const startMinutes = parseInt(startMinutesString, 10);
+  const endHours = parseInt(endHoursString, 10);
+  const endMinutes = parseInt(endMinutesString, 10);
+
+  // Create new Date objects for start and end times
+  const startDate = new Date();
+  startDate.setHours(startHours, startMinutes, 0, 0);
+
+  const endDate = new Date();
+  endDate.setHours(endHours, endMinutes, 0, 0);
+
+  // Check if redirection has already occurred today
+ 
+
+  // Update the timer every second
+  const timerInterval = setInterval(updateTimer, 1000);
+
+  function updateTimer() {
+    const currentTime = new Date();
+
+    // Check if current time is within the date range
+    if (currentTime >= startDate && currentTime <= endDate) {
+      const elapsedTime = currentTime - startDate;
+      const hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+      const minutes = Math.floor(
+        (elapsedTime % (1000 * 60 * 60)) / (1000 * 60)
+      );
+      const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+
+      document.getElementById("timer").textContent = `${formatTime(
+        hours
+      )}:${formatTime(minutes)}:${formatTime(seconds)}`;
+     
+
+      
+    } else {
+      // Stop the timer if it's outside the specified date range
+      clearInterval(timerInterval);
+      document.getElementById("timer").textContent = "Todays Work Completed";
+
+      // Redirect to another webpage if redirection has not already occurred today
+        
+      
+      
+     
+
+      // Clear the interval to prevent further calls to updateTimer
+      clearInterval(timerInterval);
+    }
+  }
+
+  function formatTime(time) {
+    return time < 10 ? `0${time}` : time;
+  }
+</script>
+{{!-- 
+
+<h1>{{rev.wkinfo._id}}'''''''{{rev.userinfo._id}}</h1>
+
+<h1>id={{rev._id}}timeid={{rev.wkinfo._id}}</h1> --}}
