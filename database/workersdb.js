@@ -388,5 +388,35 @@ module.exports=
                 resolve(resc.isfull)
             })
         })
+    },
+    Re_Arrange_workers_According_assending_order_of_the_date : (userid,wkid)=>
+    {
+        return new promise(async(resolve,reject)=>{
+            var info = await db.get().collection(consts.assignjob).findOne({userid:objectId(userid),wkid:objectId(wkid)})
+            var data = info.workers 
+            data.sort((a, b) => {
+               
+                if (a.preferredDates === null && b.preferredDates !== null) {
+                    return 1;
+                } else if (a.preferredDates !== null && b.preferredDates === null) {
+                    return -1; 
+                } else if (a.preferredDates !== null && b.preferredDates !== null) {
+                   
+                    return new Date(a.preferredDates[0]) - new Date(b.preferredDates[0]);
+                }
+                return 0; 
+            });
+            
+            await db.get().collection(consts.assignjob).updateOne({userid:objectId(userid),wkid:objectId(wkid)}, 
+            {
+               $set: 
+               {
+                 workers: data
+               }
+            }).then((resc)=>
+            {
+              resolve(resc)
+            })
+        })
     }
 }

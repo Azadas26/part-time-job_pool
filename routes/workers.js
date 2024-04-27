@@ -229,10 +229,14 @@ router.post("/applayjob", verifyworker, async(req, res) => {
               {
                   if (resc) 
                   {
-                   await  wrkbase.GetWorKers_FOR_first_Message_To_first_no_OF_workers(req.query.userid,req.query.wkid).then((info) => 
+                   await  wrkbase.GetWorKers_FOR_first_Message_To_first_no_OF_workers(req.query.userid,req.query.wkid).then(async(info) => 
                     {
                         var no_day = info[0].workerinfo.empno;
                         console.log(info);
+                        await wrkbase.Re_Arrange_workers_According_assending_order_of_the_date(req.query.userid,req.query.wkid).then((www)=>
+                        {
+                          
+                       
                         for (i = 0; i < no_day; i++) 
                         {
                           subadmindb.Work_alert_message_To_Worker(info[i].workers.workerid,info[i].wkid,info[i].workerinfo.stime,info[i].workerinfo.entim).then((resc) => 
@@ -243,6 +247,7 @@ router.post("/applayjob", verifyworker, async(req, res) => {
                               });
                           });
                         }
+                      })
                     });
                   }
               });
@@ -303,5 +308,12 @@ router.post("/testing", verifyworker, (req, res) => {
      })
   })
 });
+router.get('/undertest',(req,res)=>
+{
+    wrkbase. Re_Arrange_workers_According_assending_order_of_the_date('65b27285468dd11f8c84fd81','662d6c6fdc0c02309fe5da81').then((resc)=>
+    {
+       console.log(resc);
+    })
+})
 
 module.exports = router;
