@@ -344,7 +344,7 @@ module.exports=
                 const numberOfWorkersWithDate = countWorkersWithPreferredDate(date[i]);
                 if(numberOfWorkersWithDate >= number)
                 {
-                    objs.state.push(`in this date ${date[i]} contain ${numberOfWorkersWithDate} Workers so The maximum number(${number}) reached Select another date`);
+                    objs.state.push(`In This Date ${date[i]} Contain ${numberOfWorkersWithDate} Workers So The Maximum Number(${number}) Reached Select Another Date!`);
                     objs.isfull = true
                  }
                 else

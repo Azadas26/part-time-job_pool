@@ -238,7 +238,23 @@ router.get('/notification',verfyuserlogin,(req,res)=>
     {
       usebase.Turn_off_notification_whe_user_already_viwed(req.session.user._id).then(()=>
       {
-        res.render('./users/notification-page',{userhd:true,user:req.session.user,nots,pay:nots[0]})
+         if(nots[0])
+         {
+          console.log(nots);
+          if(nots[0].payed)
+          {
+            res.render('./users/notification-page',{userhd:true,user:req.session.user,nots,pay:nots[0]})
+          }
+          else
+          {
+            res.render('./users/notification-page',{userhd:true,user:req.session.user,nots})
+          }
+         }
+         else
+         {
+          res.render('./users/notification-page',{userhd:true,user:req.session.user})
+         }
+       
       }) 
       
     })

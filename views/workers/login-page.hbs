@@ -1,9 +1,9 @@
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <div id="signup" class="container-fluid">
     <div class="row ">
-        <div class="col-md-12 p-5 " style="width: auto; box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
-       <form action="/worker/signup" method="post" enctype="multipart/form-data" id="usersignupform" style="display: none;" >
-                <h1 class="text-center" style="font-weight: 800; color: rgb(38, 38, 37);"><b>Create Your Account</b>
+        <div class="col-md-12 p-5 " style="width: auto;box-shadow: #C993e8 0px 54px 55px, #C993e8 0px -12px 30px, #C993e8 0px 4px 6px, #C993e8 0px 12px 13px, #C993e8 0px -3px 5px;">
+       <form action="/worker/signup" method="post" class="text-light" enctype="multipart/form-data" id="usersignupform" style="display: none;" >
+                <h1 class="text-center text-light" style="font-weight: 800; color: rgb(38, 38, 37);"><b>Create Your Account</b>
                 </h1>
                 <div class="form-group">
                     <p style="color: red;">
@@ -81,13 +81,13 @@
                         placeholder="Password">
                 </div>
                 <div class="form-group" style="text-align: right;">
-                    <p href="/login" style="cursor: pointer;" class="text-dark" onclick="login()"><b>Alredy Have An Account ?</b></p>
+                    <p href="/login" style="cursor: pointer;" class="text-lighr" onclick="login()"><b>Alredy Have An Account ?</b></p>
                 </div>
-                <button type="submit" style="width: 100%; border-radius: 12px;" class="btn btn-dark">Submit</button>
+                <button type="submit" style="width: 100%; border-radius: 12px;font-weight: 800;" class="btn btn-dark">Submit</button>
             </form>
             {{!-- ############################################################################################### --}}
-             <form action="/worker/login" method="post" enctype="multipart/form-data"  id="login">
-                <h1 class="text-center" style="font-weight: 800; color: rgb(38, 38, 37);"><b>Switch To Your Account</b>
+             <form action="/worker/login" class="text-light" method="post" enctype="multipart/form-data"  id="login">
+                <h1 class="text-center text-light" style="font-weight: 800; color: rgb(38, 38, 37);"><b>Switch To Your Account</b>
                 </h1>
                  <p style="color: red;">
                     {{#if errorlogin}}
@@ -106,9 +106,9 @@
                         placeholder="Password">
                 </div>
                 <div class="form-group" style="text-align: right;">
-                    <p href="/signup" class="text-dark"  onclick="signup()" style="cursor: pointer;"><b>Create Your Account...</b></p>
+                    <p href="/signup" class="text-light"  onclick="signup()" style="cursor: pointer;"><b>Create Your Account...</b></p>
                 </div>
-                <button type="submit" style="width: 100%; border-radius: 12px;" class="btn btn-dark">Submit</button>
+                <button type="submit" style="width: 100%; border-radius: 12px;font-weight: 800;" class="btn btn-dark">Submit</button>
             </form>
         </div>
     </div>

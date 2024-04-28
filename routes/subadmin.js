@@ -182,14 +182,17 @@ router.get('/workalert',(req,res)=>
     {
         subadmindb.Set_Workers_messagedORnot_Object_Tofalse(req.query.wkid).then((resc)=>{
         var no_day = info[0].workerinfo.empno
+        subadmindb.Remove_ExistingWorker_Notification(info[0].wkid).then(()=>
+        {
         for(i=0;i<no_day;i++)
         {
-            subadmindb. Work_alert_message_To_Worker(info[i].workers.workerid,info[i].wkid,info[i].workerinfo.stime,info[i].workerinfo.entim).then((resc)=>
+            subadmindb. Work_alert_message_To_Workerss(info[i].workers.workerid,info[i].wkid,info[i].workerinfo.stime,info[i].workerinfo.entim).then((resc)=>
             {
                 res.redirect(`/subadmin/activewrkers?wkid=${req.query.wkid}&userid=${req.query.uid}`)
             })
         }
         })
+      })
         
     })
 })

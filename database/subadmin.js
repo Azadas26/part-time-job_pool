@@ -664,5 +664,32 @@ module.exports = {
           resolve()
        })
     })
+  },
+  Work_alert_message_To_Workerss : (userid,wkid,sdate,edate)=>
+  {
+    return new promise(async(resolve,reject)=>
+    {     
+      var state =
+      {
+         userid : objectId(userid),
+         wkid:objectId(wkid),
+         notview : true,
+         msg : "Your Work is in tomorrow at "+sdate+" to "+edate
+      }
+       db.get().collection(consts.wrknotify).insertOne(state).then((info)=>
+       {
+            resolve(info)
+       })
+    })
+  },
+  Remove_ExistingWorker_Notification : (wkid)=>
+  {
+     return new promise(async(resolve,reject)=>
+     {
+      await db.get().collection(consts.wrknotify).deleteMany({wkid:objectId(wkid)}).then((resc)=>
+      {
+          resolve()
+      })
+     })
   }
 };

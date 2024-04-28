@@ -108,11 +108,23 @@
 <body>
   <div class="container-fluid">
     <div class="row p-5">
+      <div class="col-md-12 text-center mt-5" style="width: 100%;">
+         {{#if succ}}
+           <p class="text-success" style="font-size: 30px;"><b>{{succ}}</b></p>
+         {{/if}}
+         {{#if already}}
+         {{!-- {{already}} --}}
+           <p class="text-warning" style="font-size: 30px;"><b>Your Already Commited For This Work</b></p>
+         {{/if}}
+         {{#if state}}
+          <p class="text-danger" style="font-size: 28px;"><b>{{state}}</b></p>
+            
+         {{/if}}
+      </div>
       {{#each jobs}}
         {{#if this.ctaccept}}
-          <div class="col-md-3 m-auto p-5">
-            <div class="card" style="width: 18rem;">
-              <img class="card-img-top" src="..." alt="Card image cap" />
+          <div class="col-md-3 p-5 m-auto">
+            <div class="card  text-center text-light" style="width: 18rem;background-color: #15181e;box-shadow: #C993e8 0px 54px 55px, #C993e8 0px -12px 30px, #C993e8 0px 4px 6px, #C993e8 0px 12px 13px, #C993e8 0px -3px 5px;">
               <div class="card-body">
                 <h5 class="card-title">Shop Name : {{this.sname}}</h5>
                 <h5 class="card-title">Licence Number : {{this.lno}}</h5>
@@ -122,9 +134,9 @@
                 <p class="card-text">{{this.address}}</p>
                 <a href="https://www.google.com/maps?q={{this.late}},{{this.long}}" class="btn btn-success">Location</a>
                 {{#if isfull}}
-                  <p>Job requirement process done</p>
+                  <p class="mt-4 text-dark bg-warning"><b>Job Requirement Process Done</b></p>
                 {{else}}
-                  <form action="/worker/applayjob?wkid={{this._id}}&userid={{this.userid}}" method="post" class="m-3" id="job_form_{{this._id}}">
+                  <form action="/worker/applayjob?wkid={{this._id}}&userid={{this.userid}}" method="post" class="m-3 text-light" id="job_form_{{this._id}}">
                     <div>
                       <label for="date">Select Your Own Time</label>
                       <select name="date" id="date_{{this._id}}" onchange="dat(this, '{{this._id}}')">
@@ -135,9 +147,9 @@
                     </div> <br>
                     <div id="selectdate_{{this._id}}" style="display: none;">
                       <label for="preferredDates"><b>Choose Preferred Dates</b></label>
-                      <input type="text" id="preferredDates_{{this._id}}" name="preferredDates" placeholder="Select dates" required>
+                      <input type="text" id="preferredDates_{{this._id}}" class="mb-4" name="preferredDates" placeholder="Select dates" required>
                     </div>
-                    <input class="btn btn-outline-warning" type="submit" value="Ready to join" id="submit_button_{{this._id}}">
+                    <input class="btn btn-outline-warning m-auto" type="submit" value="Ready to join" id="submit_button_{{this._id}}">
                   </form>
                 {{/if}}
               </div>
@@ -177,19 +189,10 @@
           </script>
         {{/if}}
       {{/each}}
-      {{#if succ}}
-        <p>{{succ}}</p>
-      {{/if}}
-      {{#if already}}
-        {{already}}
-      {{/if}}
+     
     </div>
   </div>
-  {{#if state}}
-  
-      {{state}}</h1>
  
-{{/if}}
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
 </html>

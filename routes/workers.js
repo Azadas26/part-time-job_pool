@@ -260,7 +260,7 @@ router.post("/applayjob", verifyworker, async(req, res) => {
              } 
              else
              {
-               res.render("./workers/jobs-page", {wk: true,user: req.session.wrker,jobs,fill,succ: "Requested Successfully Commited"});
+               res.render("./workers/jobs-page", {wk: true,user: req.session.wrker,jobs,fill,succ: "Request Successfully Commited"});
              }
             }
           });

@@ -1,0 +1,45 @@
+<div id="wkfirstpage" class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <img class="m-5" style="width: 1000px;height: 100px;" src="/images/task horizon.png" alt="">
+            <p class="lead text-light mb-5" style="font-weight: 800;">"<span style="font-size: 35px;">W</span>elcome, Ambitious Doers! Your time, your terms. Dive into a world of limitless opportunities tailored to your schedule. Discover secure and compelling job offers that match your skills and passions. Let's unlock your potential together!"</p>
+            <p class="lead text-light" style="font-weight: 800;">"<span style="font-size: 35px;">A</span>t our organization, we're committed to providing top-tier part-time opportunities that empower you to work on your own terms. Your schedule, your rules, ensuring you reach your maximum earning potential. Join us and redefine what it means to thrive in part-time work."</p>
+             <a href="/worker/applayjob" class="btn  btn-lg mb-5" style="background-color: black;"><b>Explore Our Services</b></a>
+        </div>
+    </div>
+</div>
+
+<style>
+    
+    #wkfirstpage {
+        background-image: url(/images/1.webp);
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative; /* Ensure the overlay is positioned relative to the container */
+    }
+
+    /* Add a subtle overlay to enhance readability */
+    #wkfirstpage::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+        z-index: -1; /* Ensure the overlay stays behind the content */
+    }
+
+    /* Style adjustments for better readability */
+    .lead {
+        font-size: 24px;
+        max-width: 800px; /* Limit the width of the paragraph for better readability on larger screens */
+        margin: 0 auto; /* Center the paragraph horizontally */
+    }
+</style>
