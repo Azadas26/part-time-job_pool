@@ -19,7 +19,7 @@
           {{/if}}
           {{else}}
          <div class="col-md-6 mt-5 p-5">
-          <div class="card text-light" style="width: 100%;background-color: #15181e;"> 
+          <div class="card text-light" style="width: 100%;background-color: #15181e;box-shadow: #C993e8 0px 20px 30px -10px;"> 
             <form class="p-5" action="/reqcontract?wktype=sm" method="post" enctype="multipart/form-data" id="usersignupform">
                 <h1 class="text-center" style="font-weight: 800;"><b>Enter Shop Details</b>
                 </h1>
@@ -118,11 +118,13 @@
      {{#if reqexist}}
 
      {{else}}
-        <div class="col-md-6  p-5">
-      <div class="card text-light" style="width: 100%;background-color: #d73e17;;">
-              
-      </div>
+       <div class="col-md-6 mt-5 p-5 d-flex justify-content-center align-items-center">
+    <div id="ctform" class="card text-light mt-5 pt-5" style="width: 100%; height: 100vh; background-color: #15181e;">
+        <img id="ct" class="mt-5 pt-t" style="width: 800px; height: 100px; opacity: 0;" src="/images/task horizon.png" alt=""> 
+         <img id="ct" class="mt-5 pt-t ml-5 pl-5" style="width: 400px; height: 400px; opacity: 0;" src="/images/task horizon [purple and black].png" alt="">
     </div>
+</div>
+
   </div>
 </div>
      {{/if}}
@@ -153,3 +155,18 @@
         }
         
 </script>
+
+<style>
+    #ct {
+        animation: fadeIn 3.5s ease-in-out forwards; /* Apply fade-in animation */
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0; /* Start with 0 opacity */
+        }
+        to {
+            opacity: 100; /* Fade in to full opacity */
+        }
+    }
+</style>

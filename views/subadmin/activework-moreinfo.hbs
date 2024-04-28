@@ -1,7 +1,29 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12" style="text-align: center;">
-            <table class="table text-light">
+  <div class="text-light mt-5">
+  {{#if datebetween}}
+  {{!-- ################################################################################################### --}}
+      <div id="timer">00:00:00</div>
+       <style>
+    #timer {
+      font-size: 64px;
+      font-weight: bold;
+      width: 90vw; /* Set the width to 30% of the viewport width */
+      height: auto; /* Automatically adjust height based on content */
+    }
+  </style>
+   {{!-- ################################################################################################### --}}
+  {{/if}}
+
+  {{#if datealreadyend}}
+    <h1 style="font-weight: 800;">This Contract Already Expired</h1>
+  {{/if}}
+  {{#if datenotreached}}
+     <h1 style="font-weight: 800;">Work Progress Only Between {{rev.wkinfo.sdate}} And {{rev.wkinfo.edate}}</h1>
+  {{/if}}
+</div>
+  <table class="table text-light p-5 mt-5">
   <thead>
     <tr>
          <th scope="col">Number</th> 
@@ -37,28 +59,7 @@
     {{/if}}
   </tbody>
 </table>
-<div class="text-light">
-  {{#if datebetween}}
-  {{!-- ################################################################################################### --}}
-      <div id="timer">00:00:00</div>
-       <style>
-    #timer {
-      font-size: 64px;
-      font-weight: bold;
-      width: 90vw; /* Set the width to 30% of the viewport width */
-      height: auto; /* Automatically adjust height based on content */
-    }
-  </style>
-   {{!-- ################################################################################################### --}}
-  {{/if}}
 
-  {{#if datealreadyend}}
-    <h1>This Contract already expired</h1>
-  {{/if}}
-  {{#if datenotreached}}
-     <h1>Work progress only between {{rev.wkinfo.sdate}} and {{rev.wkinfo.edate}}</h1>
-  {{/if}}
-</div>
         </div>
 
     </div>
@@ -118,7 +119,7 @@
     } else {
       // Stop the timer if it's outside the specified date range
       clearInterval(timerInterval);
-      document.getElementById("timer").textContent = "Todays Work Completed";
+      document.getElementById("timer").textContent = "Today Work Completed";
 
       // Redirect to another webpage if redirection has not already occurred today
         
@@ -151,3 +152,43 @@
 <h1>{{rev.wkinfo._id}}'''''''{{rev.userinfo._id}}</h1>
 
 <h1>id={{rev._id}}timeid={{rev.wkinfo._id}}</h1> --}}
+
+<style>
+  <style>
+    /* Style for the table */
+    .table {
+        background-color: #343a40; /* Dark background color */
+        color: #fff; /* Text color */
+        border-radius: 10px; /* Rounded corners */
+    }
+
+    /* Style for table headings */
+    .table th {
+        background-color: #212529; /* Darker background color for headings */
+        border: none; /* Remove border */
+    }
+
+    /* Style for table body */
+    .table tbody tr:nth-child(even) {
+        background-color: #454d55; /* Alternate row color */
+    }
+
+    /* Style for table cell content */
+    .table td, .table th {
+        padding: 10px; /* Padding for cell content */
+    }
+
+    /* Style for location button */
+    .btn-location {
+        background-color: #28a745; /* Green background color */
+        border-color: #28a745; /* Green border color */
+    }
+
+    /* Style for location button on hover */
+    .btn-location:hover {
+        background-color: #218838; /* Darker green background color on hover */
+        border-color: #1e7e34; /* Darker green border color on hover */
+    }
+</style>
+
+</style>

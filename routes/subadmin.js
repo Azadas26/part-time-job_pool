@@ -58,7 +58,7 @@ router.get('/acceptworkers',verfysubadmin,(req,res)=>
 {
      subadmindb.Shoew_Worker_Users_AND_accept_OR_reJect(req.session.subadmin.district).then((users)=>
      {
-         res.render('./subadmin/accept-workers',{suba:true,users})
+         res.render('./subadmin/accept-workers',{suba:true,user:req.session.subadmin})
      })
 })
 router.post("/acceptworkers",(req,res)=>

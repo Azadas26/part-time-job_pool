@@ -1,0 +1,35 @@
+<div id="wkfirstpage" class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <img id="logo" class="" style="width: 1000px;height: 100px; opacity: 0;" src="/images/task horizon.png" alt="">
+        </div>
+    </div>
+</div>
+
+<style>
+    #wkfirstpage {
+        background-image: url("/images/your-background-image.jpg"); /* Replace "your-background-image.jpg" with the path to your background image */
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative; /* Ensure the overlay is positioned relative to the container */
+    }
+
+    #logo {
+        animation: fadeIn 3.5s ease-in-out forwards; /* Apply fade-in animation */
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0; /* Start with 0 opacity */
+        }
+        to {
+            opacity: 100; /* Fade in to full opacity */
+        }
+    }
+</style>

@@ -1,6 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12" style="text-align: center;">
+    {{#if users}}        
             <table class="table text-light">
   <thead>
     <tr>
@@ -19,7 +20,7 @@
     </tr>
   </thead>
   <tbody>
-    {{#if users}}
+    
      {{#each users}}
      <tr>          
        <td>{{@index}}</td>
@@ -96,10 +97,47 @@
      </tr>
      {{/each}}
     {{else}}
-        <h1 class="text-light">Nothing Found</h1>
+        <h1 class="text-light mt-5 pt-5" style="font-weight: 800;font-size: 90px;">Nothing Found...</h1>
     {{/if}}
   </tbody>
 </table>
         </div>
     </div>
 </div>
+
+ <style>
+    /* Style for the table */
+    .table {
+        background-color: #343a40; /* Dark background color */
+        color: #fff; /* Text color */
+        border-radius: 10px; /* Rounded corners */
+    }
+
+    /* Style for table headings */
+    .table th {
+        background-color: #212529; /* Darker background color for headings */
+        border: none; /* Remove border */
+    }
+
+    /* Style for table body */
+    .table tbody tr:nth-child(even) {
+        background-color: #454d55; /* Alternate row color */
+    }
+
+    /* Style for table cell content */
+    .table td, .table th {
+        padding: 10px; /* Padding for cell content */
+    }
+
+    /* Style for location button */
+    .btn-location {
+        background-color: #28a745; /* Green background color */
+        border-color: #28a745; /* Green border color */
+    }
+
+    /* Style for location button on hover */
+    .btn-location:hover {
+        background-color: #218838; /* Darker green background color on hover */
+        border-color: #1e7e34; /* Darker green border color on hover */
+    }
+</style>

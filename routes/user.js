@@ -337,5 +337,13 @@ router.get('/afterplaced',(req,res)=>
 {
     res.render('./users/success-page',{userhd:true,user:req.session.user})
 })
+router.get('/about',(req,res)=>
+{
+    res.render('./users/about-page',{userhd:true,user:req.session.user})
+})
+router.get('/deverr',verfyuserlogin,(req,res)=>
+{
+   res.render('./users/dev-err',{userhd:true,user:req.session.user})
+})
 
 module.exports = router;
