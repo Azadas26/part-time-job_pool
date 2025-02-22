@@ -1,22 +1,19 @@
-$("#payment").submit((e)=>
-{
-  e.preventDefault()
-  $.ajax({
-  url:'/payment',
-  method :'post',
-  data: $('#payment').serialize(),
-  success : (response)=>
-  {
-    //alert(response)
-    razorpayPayment(response)
-    
-  }
-})
+$("#payment").submit((e) => {
+    e.preventDefault()
+    $.ajax({
+        url: '/payment',
+        method: 'post',
+        data: $('#payment').serialize(),
+        success: (response) => {
+            //alert(response)
+            razorpayPayment(response)
+
+        }
+    })
 })
 
 
-function razorpayPayment(order)
-{
+function razorpayPayment(order) {
     var options = {
         "key": "rzp_test_NVSZaOyVAMHDJW", // Enter the Key ID generated from the Dashboard
         "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -25,10 +22,10 @@ function razorpayPayment(order)
         "description": "Test Transaction",
         "image": "https://example.com/your_logo",
         "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the previous step
-        "handler": function (response){
-          
+        "handler": function (response) {
 
-            verfyPayment(response,order)
+
+            verfyPayment(response, order)
         },
         "prefill": {
             "name": "Gaurav Kumar",
@@ -47,7 +44,7 @@ function razorpayPayment(order)
 }
 
 
-function verfyPayment(payment,order) {
+function verfyPayment(payment, order) {
 
     $.ajax({
         url: '/verfy-pay',

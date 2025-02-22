@@ -158,8 +158,8 @@ module.exports = {
         });
     });
   },
-  Get_WorkS_and_Today_Worker_Details: (userid,wkid) => {
-    console.log(userid,wkid);
+  Get_WorkS_and_Today_Worker_Details: (userid, wkid) => {
+    console.log(userid, wkid);
     return new promise(async (resolve, reject) => {
       var wrk = await db
         .get()
@@ -168,8 +168,8 @@ module.exports = {
           {
             $match:
             {
-                userid : objectId(userid),
-                wkid:objectId(wkid)
+              userid: objectId(userid),
+              wkid: objectId(wkid)
             }
           },
           {
@@ -228,13 +228,13 @@ module.exports = {
           },
         ])
         .toArray();
-        console.log(wrk);
-        resolve(wrk);
+     // console.log(wrk);
+      resolve(wrk);
     });
   },
-  Reverse_the_current_active_Workers: (id,count) => {
+  Reverse_the_current_active_Workers: (id, count) => {
     return new promise(async (resolve, reject) => {
-      console.log("azaddd count",count);
+      console.log("azaddd count", count);
       // var info = await db
       //   .get()
       //   .collection(consts.assignjob)
@@ -256,31 +256,30 @@ module.exports = {
       //   .toArray();
       //   console.log("First");
       // resolve(info);
-      const info = await db.get().collection(consts.assignjob).findOne({_id: objectId(id) });
+      const info = await db.get().collection(consts.assignjob).findOne({ _id: objectId(id) });
 
-       // Extract the first two elements
-       const firstTwoWorkers = info.workers.slice(0,count);
+      // Extract the first two elements
+      const firstTwoWorkers = info.workers.slice(0, count);
 
       // Extract the remaining elements starting from index 2 
       const remainingWorkers = info.workers.slice(count);
 
-     // Concatenate the remaining elements with the extracted first two elements
-     const shiftedWorkers = remainingWorkers.concat(firstTwoWorkers);
+      // Concatenate the remaining elements with the extracted first two elements
+      const shiftedWorkers = remainingWorkers.concat(firstTwoWorkers);
 
-    // Update the document in the collection
-   await db.get().collection(consts.assignjob).updateOne({_id: objectId(id) }, 
-    {
-       $set: {
-         workers: shiftedWorkers 
+      // Update the document in the collection
+      await db.get().collection(consts.assignjob).updateOne({ _id: objectId(id) },
+        {
+          $set: {
+            workers: shiftedWorkers
+          }
         }
-       }
-  ).then((resc)=>
-  {
-      resolve(resc)
-  })
+      ).then((resc) => {
+        resolve(resc)
+      })
 
     });
-},
+  },
   View_Current_Running_Works_and_user: () => {
     return new promise(async (resolve, reject) => {
       var wrk = await db
@@ -315,7 +314,7 @@ module.exports = {
               ctaccept: 1,
               isfull: 1,
               pay: 1,
-              isreqpay:1,
+              isreqpay: 1,
               wkinfo: {
                 $arrayElemAt: ["$user", 0],
               },
@@ -506,8 +505,8 @@ module.exports = {
             var status = {
               userid: objectId(userid),
               wkid: objectId(wkid),
-              payed:false,
-              viewed:false,
+              payed: false,
+              viewed: false,
               info: [infos],
             };
             db.get()
@@ -520,75 +519,64 @@ module.exports = {
         });
     });
   },
-  Get_Time_state_expire_Or_not : (id) =>
-  {
-      return new promise((resolve,reject)=>
-      {
-          db.get().collection(consts.userContractdb).findOne({_id:objectId(id)}).then((obj)=>
-          {
-            
-             resolve(obj)
-          })
+  Get_Time_state_expire_Or_not: (id) => {
+    return new promise((resolve, reject) => {
+      db.get().collection(consts.userContractdb).findOne({ _id: objectId(id) }).then((obj) => {
+
+        resolve(obj)
       })
-  },
-  Change_state_of_time_object : (id)=>
-  {
-    return new promise((resolve,reject)=>
-    {
-      db.get().collection(consts.userContractdb).updateOne({_id:objectId(id)},
-    {
-      $set:
-      {
-        time1 : false,
-        time2: true
-      }
-    }).then((res)=>
-    {
-      console.log("Second");
-      resolve(res)
-    })
     })
   },
-  Change_Time_status_For_Both_Time_End_andTimeRunning : (id)=>
-  {
-    return new promise((resolve,reject)=>
-    {
-        db.get().collection(consts.userContractdb).updateOne({_id:objectId(id)},
+  Change_state_of_time_object: (id) => {
+    return new promise((resolve, reject) => {
+      db.get().collection(consts.userContractdb).updateOne({ _id: objectId(id) },
         {
           $set:
           {
-            time2 : false,
-            time1 : true,
-            replywk : true
+            time1: false,
+            time2: true
           }
-        }).then((res)=>
-        {
+        }).then((res) => {
+          console.log("Second");
           resolve(res)
         })
     })
   },
-  Preveous_day_Work_alert_To_Workers :(userid,wrkid)=>
-  {
-    return new promise(async(resolve,reject)=>
-    {
-      var info =await db.get().collection(consts.assignjob).aggregate([
+  Change_Time_status_For_Both_Time_End_andTimeRunning: (id) => {
+    return new promise((resolve, reject) => {
+      db.get().collection(consts.userContractdb).updateOne({ _id: objectId(id) },
+        {
+          $set:
+          {
+            time2: false,
+            time1: true,
+            replywk: true
+          }
+        }).then((res) => {
+          resolve(res)
+        })
+    })
+  },
+  Preveous_day_Work_alert_To_Workers: (userid, wrkid) => {
+    return new promise(async (resolve, reject) => {
+      var info = await db.get().collection(consts.assignjob).aggregate([
         {
           $match:
           {
-            userid:objectId(userid),
-            wkid:objectId(wrkid)
+            userid: objectId(userid),
+            wkid: objectId(wrkid)
           }
         },
         {
-          $unwind : "$workers"
+          $unwind: "$workers"
         },
         {
           $project:
           {
-             userid:1,
-             wkid:1,
-             workers:1,
-             date:"$workers.preferredDates"
+            userid: 1,
+            wkid: 1,
+            workers: 1,
+            date: "$workers.preferredDates"
           }
         },
         {
@@ -601,10 +589,10 @@ module.exports = {
         },
         {
           $project: {
-            userid:1,
-            wkid:1,
-            workers:1,
-            date:1,
+            userid: 1,
+            wkid: 1,
+            workers: 1,
+            date: 1,
             workerinfo: {
               $arrayElemAt: ["$workerinfo", 0],
             },
@@ -615,81 +603,66 @@ module.exports = {
       resolve(info);
     })
   },
-  Work_alert_message_To_Worker : (userid,wkid,sdate,edate)=>
-  {
-    return new promise((resolve,reject)=>
-    {
-      
+  Work_alert_message_To_Worker: (userid, wkid, sdate, edate) => {
+    return new promise((resolve, reject) => {
+
       var state =
       {
-         userid : objectId(userid),
-         wkid:objectId(wkid),
-         notview : true,
-         msg : "Your Work is in tomorrow at "+sdate+" to "+edate
+        userid: objectId(userid),
+        wkid: objectId(wkid),
+        notview: true,
+        msg: "Your Work is in tomorrow at " + sdate + " to " + edate
       }
-       db.get().collection(consts.wrknotify).insertOne(state).then((info)=>
-       {
-            resolve(info)
-       })
+      db.get().collection(consts.wrknotify).insertOne(state).then((info) => {
+        resolve(info)
+      })
     })
   },
-  Set_Workers_messagedORnot_Object_Tofalse : (id)=>
-  {
-    return new promise((resolve,reject)=>
-    {
-       db.get().collection(consts.userContractdb).updateOne({_id:objectId(id)},
-       {
+  Set_Workers_messagedORnot_Object_Tofalse: (id) => {
+    return new promise((resolve, reject) => {
+      db.get().collection(consts.userContractdb).updateOne({ _id: objectId(id) },
+        {
           $set:
           {
-            replywk : false
+            replywk: false
           }
-       }).then((resc)=>
-       {
+        }).then((resc) => {
           resolve(resc)
-       })
+        })
     })
   },
-  Enable_Notification_ICON_PaymenT_request_BY_sub_admiN : (userid,wkid)=>
-  {
-    return new promise(async(resolve,reject)=>
-    {
-      await db.get().collection(consts.messagedb).updateOne({userid:objectId(userid),wkid:objectId(wkid)},
-       {
-        $set:
+  Enable_Notification_ICON_PaymenT_request_BY_sub_admiN: (userid, wkid) => {
+    return new promise(async (resolve, reject) => {
+      await db.get().collection(consts.messagedb).updateOne({ userid: objectId(userid), wkid: objectId(wkid) },
         {
-          viewed : false
-        }
-       }).then((resc)=>
-       {
+          $set:
+          {
+            viewed: false
+          }
+        }).then((resc) => {
           resolve()
-       })
+        })
     })
   },
-  Work_alert_message_To_Workerss : (userid,wkid,sdate,edate)=>
-  {
-    return new promise(async(resolve,reject)=>
-    {     
+  Work_alert_message_To_Workerss: (userid, wkid, sdate, edate) => {
+    return new promise(async (resolve, reject) => {
       var state =
       {
-         userid : objectId(userid),
-         wkid:objectId(wkid),
-         notview : true,
-         msg : "Your Work is in tomorrow at "+sdate+" to "+edate
+        userid: objectId(userid),
+        wkid: objectId(wkid),
+        notview: true,
+        msg: "Your Work is in tomorrow at " + sdate + " to " + edate
       }
-       db.get().collection(consts.wrknotify).insertOne(state).then((info)=>
-       {
-            resolve(info)
-       })
+      db.get().collection(consts.wrknotify).insertOne(state).then((info) => {
+        resolve(info)
+      })
     })
   },
-  Remove_ExistingWorker_Notification : (wkid)=>
-  {
-     return new promise(async(resolve,reject)=>
-     {
-      await db.get().collection(consts.wrknotify).deleteMany({wkid:objectId(wkid)}).then((resc)=>
-      {
-          resolve()
+  Remove_ExistingWorker_Notification: (wkid) => {
+    return new promise(async (resolve, reject) => {
+      await db.get().collection(consts.wrknotify).deleteMany({ wkid: objectId(wkid) }).then((resc) => {
+        resolve()
       })
-     })
+    })
   }
 };

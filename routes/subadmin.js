@@ -58,7 +58,7 @@ router.get('/acceptworkers',verfysubadmin,(req,res)=>
 {
      subadmindb.Shoew_Worker_Users_AND_accept_OR_reJect(req.session.subadmin.district).then((users)=>
      {
-         res.render('./subadmin/accept-workers',{suba:true,user:req.session.subadmin})
+         res.render('./subadmin/accept-workers',{suba:true,user:req.session.subadmin,users})
      })
 })
 router.post("/acceptworkers",(req,res)=>
@@ -118,21 +118,40 @@ router.get('/activeworks',(req,res)=>
 {
     subadmindb.View_Current_Running_Works_and_user().then((wrk)=>
     {
-        console.log("....",wrk);
+        //console.log("....",wrk);
         res.render('./subadmin/active-works',{suba:true,user:req.session.subadmin,wrk})
     })
 })
 router.get("/activewrkers",(req,res)=>
 {
-    console.log(req.query);
+    console.log("querry",req.query);
     subadmindb.Get_WorkS_and_Today_Worker_Details(req.query.userid,req.query.wkid).then(async(wrks)=>
     {
          var date = require('../connection/date')
        
         const wrk = wrks.slice(0, parseInt(wrks[0].wkinfo.empno));
-        console.log(wrk[0]);
+        console.log("Zerooo",wrk[0]);
         var today = new Date()
-        date.date_Between_StartAnd_End(wrk[0].wkinfo.sdate,wrk[0].wkinfo.edate,today.toISOString().split('T')[0]).then((contractdate)=>
+        function getISTDate() {
+            const today = new Date();
+          
+            // Convert to IST by adding the offset (5.5 hours = 19800000 ms)
+            const istOffset = 5.5 * 60 * 60 * 1000; 
+            const istDate = new Date(today.getTime() + istOffset);
+          
+            // Format the date as YYYY-MM-DD
+            const year = istDate.getFullYear();
+            const month = String(istDate.getMonth() + 1).padStart(2, '0'); // months are zero-indexed
+            const day = String(istDate.getDate()).padStart(2, '0');
+          
+            return `${year}-${month}-${day}`;
+          }
+          
+          console.log(getISTDate());
+          
+        console.log("To Data Date",today);
+        
+        date.date_Between_StartAnd_End(wrk[0].wkinfo.sdate,wrk[0].wkinfo.edate,getISTDate()).then((contractdate)=>
         {
             console.log();
             res.render('./subadmin/activework-moreinfo',{suba:true,user:req.session.subadmin,wrk,rev:wrk[0],datebetween:contractdate})
@@ -147,10 +166,8 @@ router.get("/activewrkers",(req,res)=>
            {
             res.render('./subadmin/activework-moreinfo',{suba:true,user:req.session.subadmin,wrk,rev:wrk[0],datenotreached:true})
            }
-        })
-       
-    })
-    
+        })  
+    })   
 })
 router.get("/reqpay",(req,res)=>
 {

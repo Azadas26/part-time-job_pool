@@ -175,7 +175,7 @@
         background-position: bottom;
         height: 100vh;
         display: flex;
-        animation: fadeIn 4.0s ease-in-out forwards;
+        animation: zoomIn 0.5s ease-in-out forwards;
 
     }
 
@@ -201,12 +201,14 @@
         animation: fadeIn 2.0s ease-in-out forwards; /* Apply fade-in animation */
     }
 
-    @keyframes fadeIn {
-        from {
-            opacity: 0; /* Start with 0 opacity */
-        }
-        to {
-            opacity: 100; /* Fade in to full opacity */
-        }
+    @keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
     }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
 </style>
