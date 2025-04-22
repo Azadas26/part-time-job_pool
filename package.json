@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nodemon ./bin/www"
   },
+  "bin": "app.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
@@ -14,7 +15,7 @@
     "express-fileupload": "^1.4.3",
     "express-handlebars": "^7.1.2",
     "express-session": "^1.17.3",
-    "hbs": "^4.2.0",
+    "hbs": "^4.2.0",  
     "http-errors": "~1.6.3",
     "mongodb": "^3.6.2",
     "morgan": "~1.9.1",

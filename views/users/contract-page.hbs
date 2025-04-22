@@ -1,5 +1,5 @@
 <div class="container-fluid m-3">
-  <div class="row">   
+  <div class="row" style="display: flex; align-items: center;justify-content: center;">   
         {{#if reqexist}}
           {{#if isfull}}
             <div class="col-md-12 d-flex align-items-center justify-content-center" style="width: 100%; height: 100vh;">
@@ -18,7 +18,7 @@
            </div>
           {{/if}}
           {{else}}
-         <div class="col-md-6 mt-5 p-5">
+         <div class="col-md-6 mt-5 p-5" style="">
           <div class="card text-light" style="width: 100%;background-color: #15181e;box-shadow: #C993e8 0px 20px 30px -10px;"> 
             <form class="p-5" action="/reqcontract?wktype=sm" method="post" enctype="multipart/form-data" id="usersignupform">
                 <h1 class="text-center" style="font-weight: 800;"><b>Enter Shop Details</b>
@@ -118,12 +118,7 @@
      {{#if reqexist}}
 
      {{else}}
-       <div class="col-md-6 mt-5 p-5 d-flex justify-content-center align-items-center">
-    <div id="ctform" class="card text-light mt-5 pt-5" style="width: 100%; height: 100vh; background-color: #15181e;">
-        <img id="ct" class="mt-5 pt-t" style="width: 800px; height: 100px; opacity: 0;" src="/images/task horizon.png" alt=""> 
-         <img id="ct" class="mt-5 pt-t ml-5 pl-5" style="width: 400px; height: 400px; opacity: 0;" src="/images/task horizon [purple and black].png" alt="">
-    </div>
-</div>
+ 
 
   </div>
 </div>

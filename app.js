@@ -13,6 +13,7 @@ var HirerRouter = require('./routes/hiree');
 var AdminRouter = require('./routes/admin');
 var WorkerRouter = require('./routes/workers');
 var SubadminRouter = require('./routes/subadmin');
+const { runAdminSetup } = require('./connection/adminsetup');
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use('/worker', WorkerRouter);
 
 db.Database_connection().then((data) => {
   console.log(data);
+  runAdminSetup()
 }).catch((err) => {
   console.log(err);
 })
