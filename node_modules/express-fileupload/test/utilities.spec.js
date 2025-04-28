@@ -42,12 +42,24 @@ describe('utilities: Test of the utilities functions', function() {
       assert.equal(debugLog(null, testMessage), false);
     });
 
-    it('debugLog returns false if option debug is false', () => {
+    it('debugLog returns false if option debug is false or logger is not set', () => {
       assert.equal(debugLog({debug: false}, testMessage), false);
+      assert.equal(debugLog({debug: true, logger: undefined}, testMessage), false);
+      assert.equal(debugLog({debug: true, logger: {}}, testMessage), false);
     });
 
-    it('debugLog returns true if option debug is true', () => {
-      assert.equal(debugLog({debug: true}, testMessage), true);
+    it('debugLog returns true if option debug is true and logger is set', () => {
+      assert.equal(debugLog({debug: true, logger: console}, testMessage), true);
+    });
+
+    it('supports a custom logger', () => {
+      const calls = [];
+      const logger = {
+        log: (...args) => calls.push(args)
+      };
+      debugLog({debug: true, logger}, testMessage);
+      assert.equal(calls.length, 1);
+      assert.deepEqual(calls[0], [`Express-file-upload: ${testMessage}`]);
     });
 
   });
@@ -186,12 +198,12 @@ describe('utilities: Test of the utilities functions', function() {
   //buildOptions tests
   describe('Test buildOptions function', () => {
 
-    const source = { option1: '1', option2: '2' };
-    const sourceAddon = { option3: '3'};
-    const expected = { option1: '1', option2: '2' };
-    const expectedAddon = { option1: '1', option2: '2', option3: '3'};
+    const source = { option1: '1', option2: '2', hashAlgorithm: 'md5' };
+    const sourceAddon = { option3: '3', hashAlgorithm: 'sha256'};
+    const expected = { option1: '1', option2: '2', hashAlgorithm: 'md5' };
+    const expectedAddon = { option1: '1', option2: '2', option3: '3', hashAlgorithm: 'sha256'};
 
-    it('buildOptions returns and equal object to the object which was paased', () => {
+    it('buildOptions returns an equal object to the object which was passed', () => {
       let result = buildOptions(source);
       assert.deepStrictEqual(result, source);
     });
@@ -201,11 +213,18 @@ describe('utilities: Test of the utilities functions', function() {
       assert.deepStrictEqual(result, expected);
     });
 
-    it('buildOptions adds value to the result from the several source argumets', () => {
+    it('buildOptions adds value to the result from the several source arguments', () => {
       let result = buildOptions(source, sourceAddon);
       assert.deepStrictEqual(result, expectedAddon);
     });
 
+    it('buildOptions throws an error when not provided a supported hashAlgorithm', () => {
+      assert.throws(() => buildOptions({}));
+    });
+
+    it('buildOptions throws an error when given an unsupported hashAlgorithm', () => {
+      assert.throws(() => buildOptions({ hashAlgorithm: 'not-actual-algo' }));
+    });
   });
   //buildFields tests
   describe('Test buildFields function', () => {
