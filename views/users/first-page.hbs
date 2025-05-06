@@ -2,16 +2,15 @@
 
     <div class="firstdiv">
         <div class="firsthd">
-            <img id="logos" class="m-5" style="width: 800px;height: 100px;" src="/images/task horizon.png" alt="">
+            <img id="logos" class="m-5" style="width: 600px;height: 80px;" src="/images/task horizon.png" alt="">
         </div>
         <div class="firstct">
 
-            <p class=" text-light"
-                style="display: inline-block; writing-mode: tb-rl; font-size: 49px; vertical-align: middle;">
+            <p id="parttt" class=" text-light" style="">
                 <b>PART-TIME WORKS<span style="color: #C993e8;">.</span></b>
             </p>
-            <div style=" text-align: right;width: auto;">
-                <p class="text-light" style="font-weight: 800;font-size: 30px;">
+            <div id="du" style=" text-align: right;width: auto;">
+                <p class="text-light" style="">
                     <i>"Discover Skilled / Unskilled Workers Here"</i>
                 </p><br>
                 <a class="btn btn-outline btn-dark text-dark" style="background-color: #C993e8;" href="/about"><b>About
@@ -23,7 +22,7 @@
 
     </div>
     <div class="seconddiv" style="position: relative;">
-        <div style="position: absolute;top: 120px;right: 40px;">
+        <div id="edition" style="">
             <div class="float-right d-flex justify-content-center align-items-center"
                 style="font-family: serif; height: 128px; width: 136px; border-top: 5px solid white; border-bottom: 5px solid white; border-left: 5px solid white;">
                 <div class="text-center">
@@ -32,8 +31,8 @@
                 </div>
             </div>
         </div>
-        <div class="py-5" style="
-         display: flex; position: absolute;right: 140px">
+        <div id="message" class="py-5" style="
+        ">
             <div>
 
                 <p class="text-light" style="font-size: 20px;font-family: sans-serif;"><b>WE CAN PROVIDE ANY TYPE
@@ -90,6 +89,92 @@
         align-items: center;
         justify-content: center;
 
+    }
+
+    #du {
+        text-align: right;
+        width: auto;
+        font-weight: 800;
+        font-size: 20px;
+    }
+
+
+    #logos {
+        animation: fadeIn 2.0s ease-in-out forwards;
+        /* Apply fade-in animation */
+        width: 800px;
+        height: 100px;
+    }
+
+    #parttt {
+        display: inline-block;
+        writing-mode: tb-rl;
+        font-size: 49px;
+        vertical-align: middle;
+    }
+
+    #edition {
+
+        position: absolute;
+        top: 120px;
+        right: 40px;
+    }
+
+    #message {
+        display: flex;
+        position: absolute;
+        right: 140px
+    }
+
+    @media (max-width: 600px) {
+        .userroot {
+            height: 100vh;
+            width: 100%;
+            background-image: none;
+            background-attachment: scroll;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: bottom;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        #logos {
+            animation: fadeIn 2.0s ease-in-out forwards;
+            /* Apply fade-in animation */
+            width: 400px;
+            height: auto;
+            margin-top: 200px;
+        }
+
+        #parttt {
+
+            writing-mode: unset;
+            font-size: 30px;
+            vertical-align: middle;
+        }
+
+        .firstct {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #edition {
+            position: static;
+            margin-right: 20px;
+        }
+
+        #message {
+            display: flex;
+            position: static;
+
+        }
     }
 </style>
 
@@ -263,18 +348,6 @@
 
 
 <style>
-    #first {
-        background-image: url(/images/right.png);
-        background-attachment: scroll;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: bottom;
-        height: 100vh;
-        display: flex;
-        animation: zoomIn 0.5s ease-in-out forwards;
-
-    }
-
     .card {
         border-radius: 20px;
         box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
