@@ -1,71 +1,68 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-12" style="text-align: center;">
-      <div class="text-light mt-5">
-        {{#if datebetween}}
-        {{!-- ################################################################################################### --}}
-        <div id="timer">00:00:00</div>
-        <style>
-          #timer {
-            font-size: 64px;
-            font-weight: bold;
-            width: 90vw;
-            /* Set the width to 30% of the viewport width */
-            height: auto;
-            /* Automatically adjust height based on content */
-          }
-        </style>
-        {{!-- ################################################################################################### --}}
-        {{/if}}
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+  <div class="text-light mt-5">
+  {{#if datebetween}}
+  {{!-- ################################################################################################### --}}
+      <div id="timer">00:00:00</div>
+       <style>
+    #timer {
+      font-size: 64px;
+      font-weight: bold;
+      width: 90vw; /* Set the width to 30% of the viewport width */
+      height: auto; /* Automatically adjust height based on content */
+    }
+  </style>
+   {{!-- ################################################################################################### --}}
+  {{/if}}
 
-        {{#if datealreadyend}}
-        <h1 style="font-weight: 800;">This Contract Already Expired</h1>
-        {{/if}}
-        {{#if datenotreached}}
-        <h1 style="font-weight: 800;">Work Progress Only Between {{rev.wkinfo.sdate}} And {{rev.wkinfo.edate}}</h1>
-        {{/if}}
-      </div>
-      <table class="table text-light p-5 mt-5">
-        <thead>
-          <tr>
-            <th scope="col">Number</th>
-            <th scope="col">Worker Name</th>
-            <th scope="col">Worker Address</th>
-            <th scope="col">Location</th>
-            <th scope="col">Worker Phone Number</th>
-            <th scope="col">Worker Mail Address</th>
-            <th scope="col">Worker District</th>
-            <th scope="col">Skilled Or Not</th>
-            <th scope="col">Worker Aaddhar Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#if wrk}}
-          {{#each wrk}}
-          <tr>
-            <td>{{@index}}</td>
-            <td>{{this.wrkerinfo.name}}</td>
-            <td>{{this.wrkerinfo.address}}</td>
-            <td><a href="https://www.google.com/maps?q={{this.wrkerinfo.late}},{{this.wrkerinfo.long}}"
-                class="btn btn-success">Location</a></td>
-            <td>{{this.wrkerinfo.ph}}</td>
-            <td>{{this.wrkerinfo.email}}</td>
-            <td>{{this.wrkerinfo.district}}</td>
-            <td>{{this.wrkerinfo.isskilled}}</td>
-            <td>{{this.wrkerinfo.aadhar}}</td>
+  {{#if datealreadyend}}
+    <h1 style="font-weight: 800;">This Contract Already Expired</h1>
+  {{/if}}
+  {{#if datenotreached}}
+     <h1 style="font-weight: 800;">Work Progress Only Between {{rev.wkinfo.sdate}} And {{rev.wkinfo.edate}}</h1>
+  {{/if}}
+</div>
+  <table class="table text-light p-5 mt-5">
+  <thead>
+    <tr>
+         <th scope="col">Number</th> 
+      <th scope="col">Worker Name</th> 
+      <th scope="col">Worker Address</th>
+       <th scope="col">Location</th>
+      <th scope="col">Worker Phone Number</th>
+      <th scope="col">Worker Mail Address</th>
+      <th scope="col">Worker District</th> 
+      <th scope="col">Skilled Or Not</th> 
+      <th scope="col">Worker Aaddhar Number</th> 
+    </tr>
+  </thead>
+  <tbody>
+    {{#if wrk}}
+     {{#each wrk}}
+     <tr>          
+       <td>{{@index}}</td>
+       <td>{{this.wrkerinfo.name}}</td>
+        <td>{{this.wrkerinfo.address}}</td>
+        <td><a href="https://www.google.com/maps?q={{this.wrkerinfo.late}},{{this.wrkerinfo.long}}" class="btn btn-success">Location</a></td>
+        <td>{{this.wrkerinfo.ph}}</td>
+        <td>{{this.wrkerinfo.email}}</td>
+         <td>{{this.wrkerinfo.district}}</td>
+         <td>{{this.wrkerinfo.isskilled}}</td>
+         <td>{{this.wrkerinfo.aadhar}}</td>
+         
+     </tr>
+        
+     {{/each}}
+    {{else}}
+        <h1>Nothing Found</h1>
+    {{/if}}
+  </tbody>
+</table>
 
-          </tr>
-
-          {{/each}}
-          {{else}}
-          <h1>Nothing Found</h1>
-          {{/if}}
-        </tbody>
-      </table>
+        </div>
 
     </div>
-
-  </div>
 </div>
 
 <script>
@@ -91,7 +88,7 @@
   endDate.setHours(endHours, endMinutes, 0, 0);
 
   // Check if redirection has already occurred today
-
+ 
 
   // Update the timer every second
   const timerInterval = setInterval(updateTimer, 1000);
@@ -111,40 +108,38 @@
       document.getElementById("timer").textContent = `${formatTime(
         hours
       )}:${formatTime(minutes)}:${formatTime(seconds)}`;
+      
+      if({{rev.wkinfo.time2}} == true)
+       {
 
-      if ({{ rev.wkinfo.time2 }
-    } == true)
-    {
+        window.location.href = `https://part-time-job-pool.onrender.com/subadmin/changetimestate?id={{rev.wkinfo._id}}&uid={{rev.userinfo._id}}`;
+       }
 
-      window.location.href = `https://part-time-job-pool.onrender.com/subadmin/changetimestate?id={{rev.wkinfo._id}}&uid={{rev.userinfo._id}}`;
-    }
+      
+    } else {
+      // Stop the timer if it's outside the specified date range
+      clearInterval(timerInterval);
+      document.getElementById("timer").textContent = "Today Work Completed";
 
+      // Redirect to another webpage if redirection has not already occurred today
+        
+       if({{rev.wkinfo.time1}} == true)
+       {
+        window.location.href = `https://part-time-job-pool.onrender.com/subadmin/reversewrker?id={{rev._id}}&timeid={{rev.wkinfo._id}}&uid={{rev.userinfo._id}}`;
+       
+       }
+        if({{rev.wkinfo.replywk}} == true)
+       {
+       // Redirect to another webpage after 2 seconds
+          setTimeout(() => {
+                 window.location.href = `https://part-time-job-pool.onrender.com/subadmin/workalert?uid={{rev.userinfo._id}}&wkid={{rev.wkinfo._id}}`;
+          }, 2500); // 2000 milliseconds = 2 seconds
 
-  } else {
-    // Stop the timer if it's outside the specified date range
-    clearInterval(timerInterval);
-    document.getElementById("timer").textContent = "Today Work Completed";
+       }
+     
 
-    // Redirect to another webpage if redirection has not already occurred today
-
-    if ({{ rev.wkinfo.time1 }
-  } == true)
-  {
-    window.location.href = `https://part-time-job-pool.onrender.com/subadmin/reversewrker?id={{rev._id}}&timeid={{rev.wkinfo._id}}&uid={{rev.userinfo._id}}`;
-
-  }
-  if ({{ rev.wkinfo.replywk }} == true)
-  {
-    // Redirect to another webpage after 2 seconds
-    setTimeout(() => {
-      window.location.href = `https://part-time-job-pool.onrender.com/subadmin/workalert?uid={{rev.userinfo._id}}&wkid={{rev.wkinfo._id}}`;
-    }, 2500); // 2000 milliseconds = 2 seconds
-
-  }
-
-
-  // Clear the interval to prevent further calls to updateTimer
-  clearInterval(timerInterval);
+      // Clear the interval to prevent further calls to updateTimer
+      clearInterval(timerInterval);
     }
   }
 
@@ -152,7 +147,7 @@
     return time < 10 ? `0${time}` : time;
   }
 </script>
-{{!--
+{{!-- 
 
 <h1>{{rev.wkinfo._id}}'''''''{{rev.userinfo._id}}</h1>
 
@@ -160,53 +155,40 @@
 
 <style>
   <style>
+    /* Style for the table */
+    .table {
+        background-color: #343a40; /* Dark background color */
+        color: #fff; /* Text color */
+        border-radius: 10px; /* Rounded corners */
+    }
 
-  /* Style for the table */
-  .table {
-    background-color: #343a40;
-    /* Dark background color */
-    color: #fff;
-    /* Text color */
-    border-radius: 10px;
-    /* Rounded corners */
-  }
+    /* Style for table headings */
+    .table th {
+        background-color: #212529; /* Darker background color for headings */
+        border: none; /* Remove border */
+    }
 
-  /* Style for table headings */
-  .table th {
-    background-color: #212529;
-    /* Darker background color for headings */
-    border: none;
-    /* Remove border */
-  }
+    /* Style for table body */
+    .table tbody tr:nth-child(even) {
+        background-color: #454d55; /* Alternate row color */
+    }
 
-  /* Style for table body */
-  .table tbody tr:nth-child(even) {
-    background-color: #454d55;
-    /* Alternate row color */
-  }
+    /* Style for table cell content */
+    .table td, .table th {
+        padding: 10px; /* Padding for cell content */
+    }
 
-  /* Style for table cell content */
-  .table td,
-  .table th {
-    padding: 10px;
-    /* Padding for cell content */
-  }
+    /* Style for location button */
+    .btn-location {
+        background-color: #28a745; /* Green background color */
+        border-color: #28a745; /* Green border color */
+    }
 
-  /* Style for location button */
-  .btn-location {
-    background-color: #28a745;
-    /* Green background color */
-    border-color: #28a745;
-    /* Green border color */
-  }
-
-  /* Style for location button on hover */
-  .btn-location:hover {
-    background-color: #218838;
-    /* Darker green background color on hover */
-    border-color: #1e7e34;
-    /* Darker green border color on hover */
-  }
+    /* Style for location button on hover */
+    .btn-location:hover {
+        background-color: #218838; /* Darker green background color on hover */
+        border-color: #1e7e34; /* Darker green border color on hover */
+    }
 </style>
 
 </style>
